@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class Paint extends JFrame implements ActionListener, Runnable {
 
     public static final int HEIGHT = 1024;
-    public static final int WIDTH = 768;
+    public static final int WIDTH = 1200;
 
     private PadDraw padDraw;
     private Menu menuBar;
