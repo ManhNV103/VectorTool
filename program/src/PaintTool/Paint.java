@@ -1,3 +1,9 @@
+/**
+ * JAVA DRAWING APP
+ * Tran Quang Huy & Nguyen Van Manh
+ */
+
+
 package PaintTool;
 
 import javax.swing.*;
@@ -8,12 +14,12 @@ import java.awt.event.ActionListener;
 
 public class Paint extends JFrame implements ActionListener, Runnable {
 
-    public static final int HEIGHT = 800;
-    public static final int WIDTH = 900;
+    public static final int HEIGHT = 1024;
+    public static final int WIDTH = 768;
 
-    private ControlPanel controlPanel;
     private PadDraw padDraw;
     private Menu menuBar;
+    public PaintToolPanel paintToolPanel;
 
     /**
      * Constructor
@@ -32,10 +38,6 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Create control panel
-        controlPanel = new ControlPanel();
-        getContentPane().add(controlPanel, BorderLayout.WEST);
-
 
         // Create draw PadDraw
         padDraw = new PadDraw();
@@ -44,6 +46,11 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         //Set the menu bar and add the label to the content pane.
         menuBar = new Menu();
         setJMenuBar(menuBar);
+
+        //Create painting tool panel
+        paintToolPanel = new PaintToolPanel();
+
+        getContentPane().add(paintToolPanel,BorderLayout.WEST);
 
 
         repaint();

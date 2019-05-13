@@ -1,3 +1,9 @@
+/**
+ * JAVA DRAWING APP
+ * Tran Quang Huy & Nguyen Van Manh
+ */
+
+
 package PaintTool;
 
 import javax.swing.*;

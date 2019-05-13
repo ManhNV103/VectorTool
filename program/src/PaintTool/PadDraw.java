@@ -1,3 +1,9 @@
+/**
+ * JAVA DRAWING APP
+ * Tran Quang Huy & Nguyen Van Manh
+ */
+
+
 package PaintTool;
 
 import javax.swing.*;
@@ -8,6 +14,7 @@ import java.awt.event.MouseMotionAdapter;
 
 
 // ALL the code below need to be fixed.
+
 
 public class PadDraw extends JPanel{
     private SquarePanel pad;
