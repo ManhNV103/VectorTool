@@ -18,8 +18,9 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     public static final int WIDTH = 1200;
 
     private JPanel padDraw;
-    public static SquarePad squarePad;
+    public static SquarePadDrawing squarePad;
     private Menu menuBar;
+    public static ColorPalette colorPalette;
     public static PaintToolPanel paintToolPanel;
 
     /**
@@ -39,15 +40,15 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-
         // Create draw PadDraw
-        squarePad = new SquarePad();
+        squarePad = new SquarePadDrawing();
         squarePad.setBackground(Color.WHITE);
         padDraw = new JPanel();
         padDraw.setBackground(Color.LIGHT_GRAY);
         padDraw.setLayout(new GridBagLayout());
         padDraw.add(squarePad);
-        getContentPane().add(padDraw, BorderLayout.CENTER);
+
+        getContentPane().add(new JScrollPane(padDraw), BorderLayout.CENTER);
 
         //Set the menu bar and add the label to the content pane.
         menuBar = new Menu();
@@ -56,21 +57,29 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         //Create painting tool panel
         paintToolPanel = new PaintToolPanel();
 
+        //Create the color palette
+        colorPalette = new ColorPalette();
+
+        paintToolPanel.add(colorPalette,BorderLayout.CENTER);
+
         getContentPane().add(paintToolPanel,BorderLayout.WEST);
 
 
         repaint();
         setLocationRelativeTo(null);
         setVisible(true);
+        setStartingColor();
 
     }
 
-    private JPanel createPanel(Color c){
-        JPanel panel = new JPanel();
-        panel.setBackground(c);
-        return panel;
+    //set starting color to be used for drawing
+    public void setStartingColor()     //set starting color to be used for drawing
+    {
+        ColorPalette.selectedColorDisplay.setBackground(Color.black);
+        ColorPalette.selectedColor = ColorPalette.selectedColorDisplay.getBackground();
+        squarePad.currentToolDetails.setColor(ColorPalette.selectedColorDisplay.getBackground());
+        squarePad.brushColor = ColorPalette.selectedColor;
     }
-
 
 
 

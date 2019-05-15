@@ -30,12 +30,12 @@ public class PaintToolPanel extends JPanel {
     private JPanel toolPanel = new JPanel();
 
     public PaintToolPanel(){
-        setBackground(Color.WHITE);                          //customize the panel
+        setBackground(Color.DARK_GRAY);                          //customize the panel
         setPreferredSize(new Dimension(200, 0));
         setLayout(new BorderLayout(8, 8));
 
         toolPanel.setLayout(new GridLayout(4, 2));              //customize the tool panel
-        toolPanel.setBackground(Color.WHITE);
+        toolPanel.setBackground(Color.DARK_GRAY);
         toolPanel.setPreferredSize(new Dimension(200, 300));
         toolButtons = new ToolButton[8];                        //create new array of buttons
 

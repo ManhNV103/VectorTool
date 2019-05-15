@@ -14,29 +14,12 @@ import java.awt.image.BufferedImage;
 
 // ALL the code below need to be fixed.
 
-
-public class PadDraw extends JPanel{
-    private SquarePad pad;
-    private Image image;
-
-    public PadDraw(){
-        super();
-        setBackground(Color.LIGHT_GRAY);
-        setLayout(new GridBagLayout());
-        pad = new SquarePad();
-        pad.setBackground(Color.WHITE);
-        add(pad);
-    }
-
-}
-
 /**
  * Implementation of draw function should be implemented in this class (SquarePad).
  *
  */
 
-
-class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
+class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListener {
     // an image to draw on
     Image image;
 
@@ -57,7 +40,7 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
 
 
     //Now for the constructors
-    public SquarePad(){
+    public SquarePadDrawing(){
         setDoubleBuffered(false);
         addMouseListener(this);                         //add mouse listener
         addMouseMotionListener(this);                   //add mouse motion listener
@@ -203,7 +186,7 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
                 currentTool.toolType != ToolFactory.FILL_TOOL &&
                 currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
-            g.setColor(Color.BLACK);                                             //set color
+            g.setColor(brushColor);                                             //set color                                            //set color
             drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method
         }
     }
@@ -234,6 +217,18 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
         return new Dimension(s, s);
     }
 
+    private Color getCurrentColor()             //get the isSelected color from the TollDetails class
+    {
+        return currentToolDetails.getColor();
+
+    }
+
+    public void setCurrentColor(Color clr)         //set the isSelected color to the toolDetails class
+    {
+        brushColor = clr;
+        currentToolDetails.setColor(clr);
+    }
+
     /**
      * Method called when the user presses the mouse button on the panel
      * begins the draw operation in which the user sketches a curve or draws a shape
@@ -250,9 +245,10 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
         oldX = startX = evt.getX();    // save mouse coordinates.
         oldY = startY = evt.getY();
 
+        brushColor = getCurrentColor();                 //get current color
         dragGraphics = (Graphics2D) image.getGraphics();  //convert Graphics
-        dragGraphics.setColor(Color.BLACK);              //set color
-
+        dragGraphics.setColor(brushColor);              //set color
+        dragGraphics.setBackground(getBackground());
         isDrawing = true;                                 //start isDrawing
     }
 
