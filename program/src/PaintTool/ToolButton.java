@@ -43,6 +43,8 @@ public class ToolButton extends JButton implements ActionListener {
 
     public void actionPerformed(ActionEvent event)
     {
+        Paint.squarePad.currentTool = tool;
+        repaint();
 
     }
 

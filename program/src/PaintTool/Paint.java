@@ -17,9 +17,10 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     public static final int HEIGHT = 1024;
     public static final int WIDTH = 1200;
 
-    private PadDraw padDraw;
+    private JPanel padDraw;
+    public static SquarePad squarePad;
     private Menu menuBar;
-    public PaintToolPanel paintToolPanel;
+    public static PaintToolPanel paintToolPanel;
 
     /**
      * Constructor
@@ -40,7 +41,12 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
 
         // Create draw PadDraw
-        padDraw = new PadDraw();
+        squarePad = new SquarePad();
+        squarePad.setBackground(Color.WHITE);
+        padDraw = new JPanel();
+        padDraw.setBackground(Color.LIGHT_GRAY);
+        padDraw.setLayout(new GridBagLayout());
+        padDraw.add(squarePad);
         getContentPane().add(padDraw, BorderLayout.CENTER);
 
         //Set the menu bar and add the label to the content pane.
@@ -54,6 +60,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
 
         repaint();
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }
