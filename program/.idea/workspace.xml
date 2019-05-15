@@ -3,16 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="aface3c4-d701-4455-b0c0-724f039a607c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/Menu$menuListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/Menu$menuListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PadDraw.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PadDraw.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/Paint.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/Paint.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePad$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePad$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePad.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePad.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/ToolButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/ToolButton.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PaintTool/PadDraw.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/PadDraw.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/Paint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/Paint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/ToolButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/ToolButton.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +17,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/Paint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="35">
-              <caret line="53" column="29" lean-forward="true" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+            <state>
+              <caret selection-end-line="4" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -52,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/src/PaintTool/Menu.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
-              <caret line="16" column="36" lean-forward="true" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+              <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -65,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolFactory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret line="6" column="60" lean-forward="true" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
+              <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -73,8 +64,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/PadDraw.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="114" column="12" selection-start-line="114" selection-start-column="12" selection-end-line="114" selection-end-column="12" />
+            <state relative-caret-position="185">
+              <caret line="115" column="68" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -86,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+            <state relative-caret-position="-322">
+              <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -137,6 +128,7 @@
         <option value="$PROJECT_DIR$/src/PaintTool/Menu.java" />
         <option value="$PROJECT_DIR$/src/PaintTool/ToolButton.java" />
         <option value="$PROJECT_DIR$/src/PaintTool/Paint.java" />
+        <option value="$PROJECT_DIR$/src/PaintTool/ColorButton.java" />
         <option value="$PROJECT_DIR$/src/PaintTool/PadDraw.java" />
       </list>
     </option>
@@ -187,7 +179,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557898302757" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557899669820" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -337,10 +329,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/Paint.java">
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/Menu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="35">
-          <caret line="53" column="29" lean-forward="true" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
+        <state relative-caret-position="60">
+          <caret line="16" column="36" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
@@ -348,13 +340,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/Menu.java">
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/Paint.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="16" column="36" lean-forward="true" selection-start-line="16" selection-start-column="36" selection-end-line="16" selection-end-column="36" />
+        <state>
+          <caret selection-end-line="4" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/ColorButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -362,21 +364,21 @@
     <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret line="6" column="60" lean-forward="true" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
+          <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="14" column="44" lean-forward="true" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+        <state relative-caret-position="-322">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PaintTool/PadDraw.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="114" column="12" selection-start-line="114" selection-start-column="12" selection-end-line="114" selection-end-column="12" />
+        <state relative-caret-position="185">
+          <caret line="115" column="68" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="imports" expanded="true" />

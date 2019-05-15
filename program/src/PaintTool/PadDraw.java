@@ -112,6 +112,10 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
         }
 
         if(currentTool.toolType == ToolFactory.PLOT_TOOL){
+
+            graphics2D.drawLine(pointX1, pointY1, pointX1, pointY1);
+            repaint();
+            return;
             
         }
 
@@ -273,6 +277,9 @@ class SquarePad extends JPanel implements MouseListener, MouseMotionListener {
                 // and width are non-zero.
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 repaintRectangle(startX, startY, currentX, currentY);
+            }
+            else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
             }
         }
         dragGraphics.dispose();
