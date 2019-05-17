@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PaintTool.iml" filepath="$PROJECT_DIR$/PaintTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dialogtrial.iml" filepath="$PROJECT_DIR$/dialogtrial.iml" />
     </modules>
   </component>
 </project>

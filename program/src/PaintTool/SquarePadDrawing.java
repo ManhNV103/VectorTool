@@ -8,8 +8,9 @@ package PaintTool;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 
 // ALL the code below need to be fixed.
@@ -24,19 +25,22 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     Image image;
 
     // Graphics
-    Graphics2D graphics2D;
+    public Graphics2D graphics2D;
 
     //Mouse coordinates
-    int currentX, currentY, oldX, oldY;
+    public int currentX, currentY, oldX, oldY;
     private Graphics2D dragGraphics;    // A graphics context for the off-screen image, to be used while a drag is in progress.
+
     int imageWidth, imageHeight;            // current width and height of OSI, used to check against the size of the window. If the size of the window changes, a new OSI is created
     int brushPoints[][];                //two-dimensional integer array used to display the brush effect
-    private int startX, startY;         // the starting position of the mouse
+    public int startX, startY;         // the starting position of the mouse
     private boolean isDrawing;          // this is set to true when the user is isDrawing.
     protected Boolean mousePressed;     //indicates if the mouse is pressed
     public Color brushColor;            // the selectedColor that is used for the figure that is  being drawn.
     public Tool currentTool;            //indicates the isSelected Tool
     public ToolDetails currentToolDetails;  //isSelected tool details
+
+    private String outfile = ""; // this records drawing actions (the content of the export file)
 
 
     //Now for the constructors
@@ -48,6 +52,21 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         brushColor = Color.BLACK;                       //set initial brush color
         currentTool = ToolFactory.createTool(ToolFactory.PENCIL_TOOL);             //set initial painting tool
         currentToolDetails = new ToolDetails(brushColor,  ToolFactory.PENCIL_TOOL);     //set initial painting tool properties
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        Container c = getParent();
+        if (c != null) {
+            d = c.getSize();
+        } else {
+            return new Dimension(10, 10);
+        }
+        int w = (int) d.getWidth();
+        int h = (int) d.getHeight();
+        int s = (w < h ? w : h);
+        return new Dimension(s, s);
     }
 
     /**
@@ -62,7 +81,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
      * @param pointX2     point x2
      * @param pointY2     point y2
      */
-    private void drawGraphics(Graphics2D graphics2D, Tool currentTool, int pointX1, int pointY1, int pointX2, int pointY2)
+    public void drawGraphics(Graphics2D graphics2D, Tool currentTool, int pointX1, int pointY1, int pointX2, int pointY2)
     {
         int positionX, positionY;   // Top left corner of rectangle that contains the figure.
         int width, height;         // Width and height of rectangle that contains the figure.
@@ -177,6 +196,14 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    public int getHeight(){
+        return getSize().height;
+    }
+
+    public int getWidth(){
+        return getSize().width;
+    }
+
     public void paintComponent(Graphics g){
         createOffScreenImage();                             //create off-screen image
         Graphics2D graphics = (Graphics2D)g;       //convert Graphics to Graphics2D
@@ -186,8 +213,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 currentTool.toolType != ToolFactory.FILL_TOOL &&
                 currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
-            g.setColor(brushColor);                                             //set color                                            //set color
-            drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method
+            g.setColor(brushColor);                                             //set color
+            drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method.
+
         }
     }
 
@@ -202,20 +230,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     }
 
 
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        Container c = getParent();
-        if (c != null) {
-            d = c.getSize();
-        } else {
-            return new Dimension(10, 10);
-        }
-        int w = (int) d.getWidth();
-        int h = (int) d.getHeight();
-        int s = (w < h ? w : h);
-        return new Dimension(s, s);
-    }
+
 
     private Color getCurrentColor()             //get the isSelected color from the TollDetails class
     {
@@ -228,6 +243,69 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         brushColor = clr;
         currentToolDetails.setColor(clr);
     }
+
+    /**
+     * Use to set coordinates and update drawing when read from .vec file, used in Menu.java when file is imported
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     */
+
+    public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2){
+
+
+        oldX = startX = x1;
+        oldY = startY = y1;
+        brushColor = getCurrentColor();                 //get current color
+        dragGraphics = (Graphics2D) image.getGraphics();  //convert Graphics
+        dragGraphics.setColor(brushColor);              //set color
+        dragGraphics.setBackground(getBackground());
+
+        currentX = x2;
+        currentY = y2;
+
+
+        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.FILL_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
+        {
+            repaintRectangle(startX, startY, oldX, oldY);
+            if (currentX != startX && currentY != startY) {
+                // Draw the shape only if both its height
+                // and width are non-zero.
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                repaintRectangle(startX, startY, currentX, currentY);
+                // Record what we've drawn
+                if (currentTool.toolType == ToolFactory.LINE_TOOL){
+                    outfile += "LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
+                    outfile += "RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
+                    outfile += "ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
+
+                }
+
+            }
+            else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                // Record the plot we've drawn
+                outfile += "PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n";
+
+            }
+        }
+        dragGraphics.dispose();
+        dragGraphics = null;
+    }
+
+
+
+
 
     /**
      * Method called when the user presses the mouse button on the panel
@@ -253,6 +331,15 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     }
 
     /**
+     * to get output string to write to out put file. Used in Menu.java
+     * @return
+     */
+
+    public String getOutFile(){
+        return outfile;
+    }
+
+    /**
      * Method called when the user releases the mouse button
      * if the user was isDrawing a shape, the shape is drawn to the off-screen image
      * @param evt MouseEvent
@@ -273,11 +360,33 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 // and width are non-zero.
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 repaintRectangle(startX, startY, currentX, currentY);
+                // Record what we've drawn
+                if (currentTool.toolType == ToolFactory.LINE_TOOL){
+                    outfile += "LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
+                    outfile += "RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
+                    outfile += "ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                }
+                if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
+
+                }
+
+
             }
             else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                // Record what we've drawn
+                outfile += "PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n";
+
             }
         }
+
         dragGraphics.dispose();
         dragGraphics = null;
     }
@@ -312,6 +421,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         oldX = currentX;  // Save coordinates for the next call to mouseDragged or mouseReleased.
         oldY = currentY;
     }
+
+
 
 
 
