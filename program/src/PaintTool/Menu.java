@@ -104,47 +104,7 @@ public class Menu extends JMenuBar implements ActionListener {
                 // Read vec file.
                 try{
                     Scanner scanner = new Scanner(new File(filename));
-                    while (scanner.hasNextLine()) {
-                        String[] splitArray = scanner.nextLine().split("\\s+");
-
-                        if (splitArray[0].equals("RECTANGLE")){
-                            Paint.squarePad.currentTool = ToolFactory.createTool(3);
-                        }
-                        if (splitArray[0].equals("PLOT")){
-                            Paint.squarePad.currentTool = ToolFactory.createTool(4);
-                        }
-                        if (splitArray[0].equals("LINE")){
-                            Paint.squarePad.currentTool = ToolFactory.createTool(5);
-                        }
-                        if (splitArray[0].equals("ELLIPSE")){
-                            Paint.squarePad.currentTool = ToolFactory.createTool(6);
-                        }
-                        if (splitArray[0].equals("POLYGON")){
-                            Paint.squarePad.currentTool = ToolFactory.createTool(7);
-                        }
-                        //System.out.println("height" + Paint.squarePad.getHeight());
-                        //System.out.println("width" + Paint.squarePad.getWidth());
-                        int h = Paint.squarePad.getHeight();
-                        int w = Paint.squarePad.getWidth();
-
-                        if (splitArray[0].equals("PLOT")){
-                            int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
-                            int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-                            Paint.squarePad.setCoordinatesAndDraw(x1, y1, x1, y1);
-                        }
-                        else {
-                            int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
-                            int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-                            int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
-                            int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
-                            Paint.squarePad.setCoordinatesAndDraw(x1, y1, x2, y2);
-
-                        }
-
-                        repaint();
-
-                        //System.out.println(splitArray[0]);
-                    }
+                    Paint.squarePad.drawFromFile(scanner);
                     scanner.close();
                 }
                 catch (FileNotFoundException exception) {
@@ -168,10 +128,17 @@ public class Menu extends JMenuBar implements ActionListener {
                 }
 
                 // Make sure file extension is ".vec"
+                String fileName = "";
                 int index = file.getName().indexOf(".");
-                String fileNameNoExtension = file.getName().substring(0, index);
-                String fileName = file.getParentFile() + "/" + fileNameNoExtension + ".vec";
-                System.out.println(fileName);
+                if (index == -1){
+                    fileName = file.getParentFile() + "/" + file.getName() + ".vec";
+                }
+                else {
+                    String fileNameNoExtension = file.getName().substring(0, index);
+                    fileName = file.getParentFile() + "/" + fileNameNoExtension + ".vec";
+                    System.out.println(fileName);
+                }
+
 
                 try {
                     Writer out = new BufferedWriter(new FileWriter(fileName));

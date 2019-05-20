@@ -11,9 +11,11 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Scanner;
 
 
 // ALL the code below need to be fixed.
+
 
 /**
  * Implementation of draw function should be implemented in this class (SquarePad).
@@ -206,6 +208,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
     public void paintComponent(Graphics g){
         createOffScreenImage();                             //create off-screen image
+        getPreferredSize();
         Graphics2D graphics = (Graphics2D)g;       //convert Graphics to Graphics2D
         g.drawImage(image, 0, 0, this);                //draw image
         if (isDrawing &&                                      //if isDrawing...
@@ -243,6 +246,10 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         brushColor = clr;
         currentToolDetails.setColor(clr);
     }
+
+
+
+
 
     /**
      * Use to set coordinates and update drawing when read from .vec file, used in Menu.java when file is imported
@@ -301,6 +308,50 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         }
         dragGraphics.dispose();
         dragGraphics = null;
+    }
+
+    public void drawFromFile(Scanner scanner){
+        while (scanner.hasNextLine()) {
+            String[] splitArray = scanner.nextLine().split("\\s+");
+
+            if (splitArray[0].equals("RECTANGLE")){
+                currentTool = ToolFactory.createTool(3);
+            }
+            if (splitArray[0].equals("PLOT")){
+                currentTool = ToolFactory.createTool(4);
+            }
+            if (splitArray[0].equals("LINE")){
+                currentTool = ToolFactory.createTool(5);
+            }
+            if (splitArray[0].equals("ELLIPSE")){
+                currentTool = ToolFactory.createTool(6);
+            }
+            if (splitArray[0].equals("POLYGON")){
+                currentTool = ToolFactory.createTool(7);
+            }
+            //System.out.println("height" + Paint.squarePad.getHeight());
+            //System.out.println("width" + Paint.squarePad.getWidth());
+            int h = getHeight();
+            int w = getWidth();
+
+            if (splitArray[0].equals("PLOT")){
+                int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
+                int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
+                setCoordinatesAndDraw(x1, y1, x1, y1);
+            }
+            else {
+                int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
+                int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
+                int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
+                int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
+                setCoordinatesAndDraw(x1, y1, x2, y2);
+
+            }
+
+            repaint();
+
+            //System.out.println(splitArray[0]);
+        }
     }
 
 
