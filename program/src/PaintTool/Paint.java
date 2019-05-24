@@ -60,7 +60,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         //Create the color palette
         colorPalette = new ColorPalette();
 
-        paintToolPanel.add(colorPalette,BorderLayout.CENTER);
+        paintToolPanel.add(colorPalette,BorderLayout.SOUTH);
 
         getContentPane().add(paintToolPanel,BorderLayout.WEST);
 
