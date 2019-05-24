@@ -128,9 +128,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             return;
         }
 
-        if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL)                  //if isSelected tool is OVAL
+        if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL)                  //if isSelected tool is ELLIPSE
         {
-            graphics2D.drawOval(positionX, positionY, width, height);               //draw oval
+            graphics2D.drawOval(positionX, positionY, width, height);               //draw ellipse
             repaint();                                                      //repaint to properly display stroke
             return;
         }
@@ -139,6 +139,24 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         {
 
         }
+
+        if (currentTool.toolType == ToolFactory.FILLED_ELLIPSE_TOOL)            //if isSelected tool is FILLED ELLIPSE
+        {
+            graphics2D.fillOval(positionX, positionY, width, height);      //draw filled ellipse
+            return;
+        }
+
+        if (currentTool.toolType == ToolFactory.FILLED_RECTANGLE_TOOL)      //if isSelected tool is FILLED RECTANGLE
+        {
+            graphics2D.fillRect(positionX, positionY, width, height);      //draw filled rectangle
+            return;
+        }
+
+        if (currentTool.toolType == ToolFactory.FILLED_POLYGON_TOOL)
+        {
+            
+        }
+
 
 
     }
@@ -210,7 +228,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         g.drawImage(image, 0, 0, this);                //draw image
         if (isDrawing &&                                      //if isDrawing...
                 currentTool.toolType != ToolFactory.PENCIL_TOOL &&
-                currentTool.toolType != ToolFactory.FILL_TOOL &&
+                currentTool.toolType != ToolFactory.CLEAR_TOOL &&
                 currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
             g.setColor(brushColor);                                             //set color
@@ -266,7 +284,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentY = y2;
 
 
-        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.FILL_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
+        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
@@ -352,7 +370,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentX = evt.getX();    //save mouse coordinates
         currentY = evt.getY();
 
-        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.FILL_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
+        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
