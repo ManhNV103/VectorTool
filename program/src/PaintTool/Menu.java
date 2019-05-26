@@ -25,14 +25,16 @@ public class Menu extends JMenuBar implements ActionListener {
     private JMenuItem itemNew;
     private JMenuItem itemImport;
     private JMenuItem itemExport;
-    private JMenuItem itemUndo;
+    private static JMenuItem itemUndo;
 
     private final JFileChooser fc = new JFileChooser();
 
     public SquarePadDrawing pad2;
 
 
-
+    public static void enableUndo(){
+        itemUndo.setEnabled(true);
+    }
 
     public Menu(){
         super();
@@ -71,8 +73,13 @@ public class Menu extends JMenuBar implements ActionListener {
 
         // Edit menu
         menuEdit = new JMenu("Edit");
+
         itemUndo = new JMenuItem("Undo");
+        itemUndo.setEnabled(false);
+
         menuEdit.add(itemUndo);
+        itemUndo.addActionListener(this);
+
         menuControl = new JMenu("Control");
         menuHelp = new JMenu("Help");
         menuAbout = new JMenu("About");
@@ -101,6 +108,7 @@ public class Menu extends JMenuBar implements ActionListener {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 String filename = file.getAbsolutePath();
+                // filter .vec file only.
                 // Read vec file.
                 try{
                     Scanner scanner = new Scanner(new File(filename));
@@ -139,7 +147,6 @@ public class Menu extends JMenuBar implements ActionListener {
                     System.out.println(fileName);
                 }
 
-
                 try {
                     Writer out = new BufferedWriter(new FileWriter(fileName));
                     try {
@@ -153,9 +160,12 @@ public class Menu extends JMenuBar implements ActionListener {
             }
             System.out.println(outfile);
 
-
-
-
+        }
+        if (source == itemUndo){  // import file
+            Paint.squarePad.undo();
+            if (Paint.squarePad.getStackSize() == 0){
+                itemUndo.setEnabled(false);
+            }
         }
     }
 /*

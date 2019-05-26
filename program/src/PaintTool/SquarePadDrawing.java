@@ -11,7 +11,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.Scanner;
+import java.util.Stack;
 
 
 // ALL the code below need to be fixed.
@@ -24,18 +26,20 @@ import java.util.Scanner;
 
 class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListener {
     // an image to draw on
-    Image image;
+    private Image image;
+    private Image backGround; //undonew
+    private ImageStack<Image> savedImagesStack = new ImageStack<>(); //undonew
 
     // Graphics
-    public Graphics2D graphics2D;
+    private Graphics2D graphics;
 
     //Mouse coordinates
-    public int currentX, currentY, oldX, oldY;
+    private int currentX, currentY, oldX, oldY;
     private Graphics2D dragGraphics;    // A graphics context for the off-screen image, to be used while a drag is in progress.
 
     int imageWidth, imageHeight;            // current width and height of OSI, used to check against the size of the window. If the size of the window changes, a new OSI is created
     int brushPoints[][];                //two-dimensional integer array used to display the brush effect
-    public int startX, startY;         // the starting position of the mouse
+    private int startX, startY;         // the starting position of the mouse
     private boolean isDrawing;          // this is set to true when the user is isDrawing.
     protected Boolean mousePressed;     //indicates if the mouse is pressed
     public Color brushColor;            // the selectedColor that is used for the figure that is  being drawn.
@@ -209,8 +213,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     public void paintComponent(Graphics g){
         createOffScreenImage();                             //create off-screen image
         getPreferredSize();
-        Graphics2D graphics = (Graphics2D)g;       //convert Graphics to Graphics2D
-        g.drawImage(image, 0, 0, this);                //draw image
+        graphics = (Graphics2D) g;       //convert Graphics to Graphics2D
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);                //draw image
         if (isDrawing &&                                      //if isDrawing...
                 currentTool.toolType != ToolFactory.PENCIL_TOOL &&
                 currentTool.toolType != ToolFactory.FILL_TOOL &&
@@ -225,10 +229,10 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
 
     public void clear(){
-        graphics2D.setPaint(Color.white);
-        graphics2D.fillRect(0, 0, getSize().width, getSize().height);
-        graphics2D.setPaint(Color.BLACK);
-        graphics2D.dispose();
+        graphics.setPaint(Color.white);
+        graphics.fillRect(0, 0, getSize().width, getSize().height);
+        graphics.setPaint(Color.BLACK);
+        graphics.dispose();
         repaint();
     }
 
@@ -261,7 +265,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
     public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2){
 
-
+        saveToStack(image);
         oldX = startX = x1;
         oldY = startY = y1;
         brushColor = getCurrentColor();                 //get current color
@@ -347,6 +351,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 setCoordinatesAndDraw(x1, y1, x2, y2);
 
             }
+            //System.out.println(savedImagesStack);
 
             repaint();
 
@@ -370,6 +375,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     {
         if (isDrawing)                    // Ignore mouse presses that occur when user is already isDrawing a curve
             return;                     // if the user presses two mouse toolButtons at the same time
+
+        saveToStack(image);
 
         oldX = startX = evt.getX();    // save mouse coordinates.
         oldY = startY = evt.getY();
@@ -474,6 +481,45 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     }
 
 
+    //Undonew
+    public void undo() {
+        if (savedImagesStack.size() > 0) {
+            setImage(savedImagesStack.pop());
+        }
+    }
+
+    private void setImage(Image img) {
+        graphics = (Graphics2D) img.getGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setPaint(Color.black);
+        image = img;
+        repaint();
+    }
+    /*
+    public void setBackground(Image img) {
+        backGround = copyImage(img);
+        setImage(copyImage(img));
+    }*/
+
+    private BufferedImage copyImage(Image img) {
+        BufferedImage copyOfImage = new BufferedImage(getSize().width, getSize().height, BufferedImage.TYPE_INT_RGB);
+        Graphics g = copyOfImage.createGraphics();
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        return copyOfImage;
+    }
+
+    private void saveToStack(Image img) {
+        savedImagesStack.push(copyImage(img));
+        if (savedImagesStack.size() != 0){
+            Menu.enableUndo();
+        }
+    }
+
+    public int getStackSize(){
+        return savedImagesStack.size();
+    }
+
+
 
 
 
@@ -488,6 +534,24 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+
+
+}
+
+class ImageStack<E> extends Stack<E> {
+
+    public ImageStack() {
+        super();
+    }
+
+    @Override
+    public Object push(Object object) {
+        /*
+        while (this.size() > maxSize) {
+            this.remove(0);
+        }*/
+        return super.push((E) object);
+    }
 
 
 }

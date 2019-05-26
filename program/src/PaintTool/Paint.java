@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 public class Paint extends JFrame implements ActionListener, Runnable {
 
-    public static final int HEIGHT = 1024;
+    public static final int HEIGHT = 1200;
     public static final int WIDTH = 1200;
 
     private JPanel padDraw;
@@ -35,7 +35,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     /**
      * Create the displayed GUI.
      */
-    private void CreateGUI(){
+    private void createGUI(){
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -90,7 +90,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        CreateGUI();
+        createGUI();
     }
 
     public static void main(String[] args){
