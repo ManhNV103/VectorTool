@@ -4,7 +4,7 @@
     <list default="true" id="aface3c4-d701-4455-b0c0-724f039a607c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/ImageStack.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/ImageStack.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PaintToolPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PaintToolPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PaintToolPanel$ComboBoxHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/PaintToolPanel$ComboBoxHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePadDrawing.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaintTool/PaintTool/SquarePadDrawing.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java" afterDir="false" />
@@ -24,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="613" column="26" selection-start-line="613" selection-start-column="26" selection-end-line="613" selection-end-column="26" />
+            <state relative-caret-position="213">
+              <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1035#1044#0" expanded="true" />
@@ -55,8 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
-              <caret line="60" column="97" selection-start-line="60" selection-start-column="97" selection-end-line="60" selection-end-column="97" />
+            <state relative-caret-position="1455">
+              <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,8 +67,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4290">
-              <caret line="294" column="65" selection-start-line="294" selection-start-column="65" selection-end-line="294" selection-end-column="65" />
+            <state relative-caret-position="4155">
+              <caret line="287" column="65" selection-start-line="287" selection-start-column="65" selection-end-line="287" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -124,10 +124,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="97" />
-    <option name="y" value="22" />
-    <option name="width" value="1190" />
-    <option name="height" value="828" />
+    <option name="x" value="15" />
+    <option name="y" value="77" />
+    <option name="width" value="1280" />
+    <option name="height" value="777" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -153,13 +153,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="PaintTool" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="PaintTool" type="b2602c69:ProjectViewProjectNode" />
-              <item name="program" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="PaintTool" type="462c0819:PsiDirectoryNode" />
-              <item name="SquarePadDrawing.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -169,7 +162,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558961821217" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558965468144" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -400,8 +393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4290">
-          <caret line="294" column="65" selection-start-line="294" selection-start-column="65" selection-end-line="294" selection-end-column="65" />
+        <state relative-caret-position="4155">
+          <caret line="287" column="65" selection-start-line="287" selection-start-column="65" selection-end-line="287" selection-end-column="65" />
         </state>
       </provider>
     </entry>
@@ -442,8 +435,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="60" column="97" selection-start-line="60" selection-start-column="97" selection-end-line="60" selection-end-column="97" />
+        <state relative-caret-position="1455">
+          <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -452,8 +445,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="613" column="26" selection-start-line="613" selection-start-column="26" selection-end-line="613" selection-end-column="26" />
+        <state relative-caret-position="213">
+          <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1035#1044#0" expanded="true" />

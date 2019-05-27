@@ -90,8 +90,8 @@ private class  ComboBoxHandler implements ActionListener  //combo box (filling t
             for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1);  //remove buttons
             revalidate();
             repaint();
-            addEmptyToolButtons();                     //add basic buttons
-            addFilledToolButtons();                 //add empty shape buttons
+            addToolButtons();                     //add basic buttons
+            addEmptyToolButtons();                //add empty shape buttons
             for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
         }
         else if (selectedValue == 1 )  //if filled
@@ -99,7 +99,7 @@ private class  ComboBoxHandler implements ActionListener  //combo box (filling t
             for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1); //remove all buttons
             revalidate();
             repaint();
-            addEmptyToolButtons();                     //add basic buttons
+            addToolButtons();                     //add basic buttons
             addFilledToolButtons();                 //add empty shape buttons
             for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
         }
