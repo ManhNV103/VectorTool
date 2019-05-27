@@ -11,7 +11,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -37,8 +40,13 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     private int currentX, currentY, oldX, oldY;
     private Graphics2D dragGraphics;    // A graphics context for the off-screen image, to be used while a drag is in progress.
 
+    // Variables for polygon drawing
+    private List<Polygon> polygons = new ArrayList<Polygon>();  // List of polygons
+    private Polygon currentPolygon = new Polygon(); // Current polygon
+    private Polygon dragged;                        // Current
+    private Point lastLocation;
+
     int imageWidth, imageHeight;            // current width and height of OSI, used to check against the size of the window. If the size of the window changes, a new OSI is created
-    int brushPoints[][];                //two-dimensional integer array used to display the brush effect
     private int startX, startY;         // the starting position of the mouse
     private boolean isDrawing;          // this is set to true when the user is isDrawing.
     protected Boolean mousePressed;     //indicates if the mouse is pressed
@@ -143,7 +151,10 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
         if (currentTool.toolType == ToolFactory.POLYGON_TOOL)
         {
-
+            for (Polygon polygon : polygons) {
+                drawPolygon(graphics2D, polygon);
+            }
+            return;
         }
 
         if (currentTool.toolType == ToolFactory.FILLED_ELLIPSE_TOOL)            //if isSelected tool is FILLED ELLIPSE
@@ -227,7 +238,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         return getSize().width;
     }
 
+    @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
         createOffScreenImage();                             //create off-screen image
         getPreferredSize();
         graphics = (Graphics2D) g;       //convert Graphics to Graphics2D
@@ -241,6 +254,10 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method.
 
         }
+        for (Polygon polygon : polygons) {
+            drawPolygon(g, polygon);
+        }
+        drawPolygon(g,currentPolygon);
     }
 
 
@@ -377,6 +394,35 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     }
 
 
+    private void drawPolygon(Graphics g, Polygon polygon) {
+        if (polygon.npoints < 3) {
+            if (polygon.npoints == 1) {
+                g.fillOval(polygon.xpoints[0] - 2, polygon.ypoints[0] - 2, 4, 4);
+                drawNthPoint(g, polygon, 0);
+            } else if (polygon.npoints == 2) {
+                g.drawLine(polygon.xpoints[0], polygon.ypoints[0], polygon.xpoints[1], polygon.ypoints[1]);
+                drawNthPoint(g, polygon, 0);
+                drawNthPoint(g, polygon, 1);
+            }
+        } else {
+            g.drawPolygon(polygon);
+            for (int i = 0; i < polygon.npoints; i++) {
+                drawNthPoint(g, polygon, i);
+            }
+        }
+    }
+
+    private void drawNthPoint(Graphics g, Polygon polygon, int nth) {
+        // Only works 26 times!
+        String name = Character.toString((char) ('A' + nth));
+        int x = polygon.xpoints[nth];
+        int height = g.getFontMetrics().getHeight();
+        int y = polygon.ypoints[nth] < height ? polygon.ypoints[nth] + height : polygon.ypoints[nth];
+        Rectangle2D stringBounds = g.getFontMetrics().getStringBounds(name, g);
+        g.drawString(name, x, y);
+    }
+
+
 
 
 
@@ -394,6 +440,14 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             return;                     // if the user presses two mouse toolButtons at the same time
 
         saveToStack(image);
+
+        for (Polygon p : polygons) {
+            if (p.contains(evt.getPoint())) {
+                dragged = p;
+                lastLocation = evt.getPoint();
+                break;
+            }
+        }
 
         oldX = startX = evt.getX();    // save mouse coordinates.
         oldY = startY = evt.getY();
@@ -426,6 +480,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         isDrawing = false;        //set isDrawing to false
         currentX = evt.getX();    //save mouse coordinates
         currentY = evt.getY();
+
+        dragged = null;
+        lastLocation = null;
 
         if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
@@ -480,6 +537,12 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
         currentX = evt.getX();   // x-coordinate of mouse.
         currentY = evt.getY();   // y=coordinate of mouse.
+
+        if (dragged != null) {
+            dragged.translate(evt.getX() - lastLocation.x, evt.getY() - lastLocation.y);
+            lastLocation = evt.getPoint();
+            repaint();
+        }
 
         if (currentTool.toolType == ToolFactory.PENCIL_TOOL)
         {
@@ -536,12 +599,40 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         return savedImagesStack.size();
     }
 
+    // Add points being click into the polygon coordinates
+    protected void addPoint(int x, int y) {
+        currentPolygon.addPoint(x, y);
+        repaint();
+    }
 
+    // Clear the polygon
+    protected void clearCurrentPolygon() {
+        currentPolygon = new Polygon();
+        repaint();
+    }
 
+    // Create the polygon
+    protected void createPolygon() {
+        if (currentPolygon.npoints > 2) {
+            polygons.add(currentPolygon);
+        }
+        clearCurrentPolygon();
+        repaint();
+    }
 
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            if (e.getClickCount() == 1) {
+                addPoint(e.getX(), e.getY());
+            } else if (e.getClickCount() == 2) {
+                createPolygon();
+            }
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            clearCurrentPolygon();
+        }
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) { }
