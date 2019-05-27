@@ -10,7 +10,7 @@ package PaintTool;
 public class ToolFactory {
     //variables to hold different tool class instances
     private static Tool penTool;
-    private static Tool fillTool;
+    private static Tool clearTool;
     private static Tool undoTool;
     private static Tool rectTool;
     private static Tool plotTool;
@@ -18,16 +18,24 @@ public class ToolFactory {
     private static Tool ellipseTool;
     private static Tool polyTool;
     private static Tool currentTool;
+    private static Tool fillRectTool;
+    private static Tool fillEllipseTool;
+    private static Tool fillPolyTool;
 
     //static constant variables used to differentiate the tool classes
     public static final int PENCIL_TOOL = 0;
-    public static final int FILL_TOOL = 1;
+    public static final int CLEAR_TOOL = 1;
     public static final int UNDO_TOOL = 2;
     public static final int RECTANGLE_TOOL = 3;
     public static final int PLOT_TOOL = 4;
     public static final int LINE_TOOL = 5;
     public static final int ELLIPSE_TOOL = 6;
     public static final int POLYGON_TOOL = 7;
+    public static final int FILLED_RECTANGLE_TOOL = 8;
+    public static final int FILLED_ELLIPSE_TOOL = 9;
+    public static final int FILLED_POLYGON_TOOL = 10;
+
+
 
     /**
      * Creates a new instance of the Tool (depending on the given parameter), passing in the tool type parameter
@@ -45,9 +53,9 @@ public class ToolFactory {
                 currentTool = penTool;                       //set currentTool to that class instance
                 break;
 
-            case 1 :   if (fillTool == null  )
-                fillTool =  new Tool(FILL_TOOL);
-                currentTool = fillTool;
+            case 1 :   if (clearTool == null  )
+                clearTool =  new Tool(CLEAR_TOOL);
+                currentTool = clearTool;
                 break;
 
             case 2 :   if (undoTool == null  )
@@ -78,6 +86,21 @@ public class ToolFactory {
             case 7 :   if (polyTool == null  )
                 polyTool =  new Tool(POLYGON_TOOL);
                 currentTool = polyTool;
+                break;
+
+            case 8 :   if (fillRectTool == null  )
+                fillRectTool =  new Tool(FILLED_RECTANGLE_TOOL);
+                currentTool = fillRectTool;
+                break;
+
+            case 9 :   if (fillEllipseTool == null  )
+                fillEllipseTool =  new Tool(FILLED_ELLIPSE_TOOL);
+                currentTool = fillEllipseTool;
+                break;
+
+            case 10 :   if (fillPolyTool == null  )
+                fillPolyTool =  new Tool(FILLED_POLYGON_TOOL);
+                currentTool = fillPolyTool;
                 break;
         }
 
