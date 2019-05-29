@@ -57,13 +57,13 @@ public class PaintToolPanel extends JPanel {
         this.add(fillerType, BorderLayout.CENTER);
     }
 
-    private void addToolButtons(){
-        toolButtons[0] = new ToolButton(pencil,ToolFactory.createTool(ToolFactory.PENCIL_TOOL));
-        toolButtons[1] = new ToolButton(clear,ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
-        toolButtons[2] = new ToolButton(undo,ToolFactory.createTool(ToolFactory.UNDO_TOOL));
-        toolButtons[3] = new ToolButton(plot,ToolFactory.createTool(ToolFactory.PLOT_TOOL));
-        toolButtons[4] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
-        toolButtons[5] = new ToolButton(line,ToolFactory.createTool(ToolFactory.LINE_TOOL));	    }
+    private void addToolButtons() {
+        toolButtons[0] = new ToolButton(pencil, ToolFactory.createTool(ToolFactory.PENCIL_TOOL));
+        toolButtons[1] = new ToolButton(clear, ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
+        toolButtons[2] = new ToolButton(undo, ToolFactory.createTool(ToolFactory.UNDO_TOOL));
+        toolButtons[3] = new ToolButton(plot, ToolFactory.createTool(ToolFactory.PLOT_TOOL));
+        toolButtons[4] = new ToolButton(line, ToolFactory.createTool(ToolFactory.LINE_TOOL));
+    }
 
     private void addEmptyToolButtons(){
         toolButtons[5] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
@@ -90,8 +90,8 @@ private class  ComboBoxHandler implements ActionListener  //combo box (filling t
             for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1);  //remove buttons
             revalidate();
             repaint();
-            addEmptyToolButtons();                     //add basic buttons
-            addFilledToolButtons();                 //add empty shape buttons
+            addToolButtons();                     //add basic buttons
+            addEmptyToolButtons();                //add empty shape buttons
             for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
         }
         else if (selectedValue == 1 )  //if filled
@@ -99,7 +99,7 @@ private class  ComboBoxHandler implements ActionListener  //combo box (filling t
             for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1); //remove all buttons
             revalidate();
             repaint();
-            addEmptyToolButtons();                     //add basic buttons
+            addToolButtons();                     //add basic buttons
             addFilledToolButtons();                 //add empty shape buttons
             for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
         }
