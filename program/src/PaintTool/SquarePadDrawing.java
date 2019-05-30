@@ -66,8 +66,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         addMouseMotionListener(this);                   //add mouse motion listener
         mousePressed = false;                           //set mousePressed to false
         brushColor = Color.BLACK;                       //set initial brush color
-        currentTool = ToolFactory.createTool(ToolFactory.PENCIL_TOOL);             //set initial painting tool
-        currentToolDetails = new ToolDetails(brushColor,  ToolFactory.PENCIL_TOOL);     //set initial painting tool propertiesbrushColor
+        currentTool = ToolFactory.createTool(ToolFactory.LINE_TOOL);             //set initial painting tool
+        currentToolDetails = new ToolDetails(brushColor,  ToolFactory.LINE_TOOL);     //set initial painting tool propertiesbrushColor
     }
 
     @Override
@@ -186,11 +186,6 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             return;
         }
 
-        if(currentTool.toolType == ToolFactory.UNDO_TOOL){
-            undo();
-            return;
-        }
-
 
     }
 
@@ -263,9 +258,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         graphics = (Graphics2D) g;       //convert Graphics to Graphics2D
         g.drawImage(image, 0, 0, getWidth(), getHeight(), this);                //draw image
         if (isDrawing &&                                      //if isDrawing...
-                currentTool.toolType != ToolFactory.PENCIL_TOOL &&
-                currentTool.toolType != ToolFactory.CLEAR_TOOL &&
-                currentTool.toolType != ToolFactory.UNDO_TOOL)
+                currentTool.toolType != ToolFactory.CLEAR_TOOL)
         {
             g.setColor(brushColor);                                             //set color
             drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method.
@@ -333,7 +326,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentY = y2;
 
 
-        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
+        if ( currentTool.toolType != ToolFactory.CLEAR_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
@@ -375,19 +368,19 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             String[] splitArray = scanner.nextLine().split("\\s+");
 
             if (splitArray[0].equals("RECTANGLE")){
-                currentTool = ToolFactory.createTool(3);
+                currentTool = ToolFactory.createTool(1);
             }
             if (splitArray[0].equals("PLOT")){
-                currentTool = ToolFactory.createTool(4);
+                currentTool = ToolFactory.createTool(2);
             }
             if (splitArray[0].equals("LINE")){
-                currentTool = ToolFactory.createTool(5);
+                currentTool = ToolFactory.createTool(3);
             }
             if (splitArray[0].equals("ELLIPSE")){
-                currentTool = ToolFactory.createTool(6);
+                currentTool = ToolFactory.createTool(4);
             }
             if (splitArray[0].equals("POLYGON")){
-                currentTool = ToolFactory.createTool(7);
+                currentTool = ToolFactory.createTool(5);
             }
             //System.out.println("height" + Paint.squarePad.getHeight());
             //System.out.println("width" + Paint.squarePad.getWidth());
@@ -483,7 +476,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentY = evt.getY();
 
 
-        if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
+        if (currentTool.toolType != ToolFactory.CLEAR_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
@@ -538,13 +531,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentY = evt.getY();   // y=coordinate of mouse.
 
 
-        if (currentTool.toolType == ToolFactory.PENCIL_TOOL)
-        {
-            drawGraphics(dragGraphics, ToolFactory.createTool(ToolFactory.LINE_TOOL), oldX, oldY, currentX, currentY); // A CURVE is drawn as a series of LINEs.
-            repaintRectangle(oldX, oldY, currentX, currentY);
-        }
 
-        else if (currentTool.toolType == ToolFactory.CLEAR_TOOL)
+        if (currentTool.toolType == ToolFactory.CLEAR_TOOL)
         {
 
             drawGraphics(dragGraphics, ToolFactory.createTool(ToolFactory.CLEAR_TOOL), oldX, oldY, currentX, currentY); // A CURVE is drawn as a series of LINEs.
