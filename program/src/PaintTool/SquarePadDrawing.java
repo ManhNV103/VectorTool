@@ -41,16 +41,16 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     private int currentX, currentY, oldX, oldY;
     private Graphics2D dragGraphics;    // A graphics context for the off-screen image, to be used while a drag is in progress.
     // Variables for polygon drawing
-    private List<Polygon> polygons = new ArrayList<Polygon>();  // List of polygons
-    private Polygon currentPolygon = new Polygon(); // Current polygon
-    private Polygon currentFilledPolygon = new Polygon();
-    private List<Color> polyColor = new ArrayList<>();
-    private List<Color> polyFilledColor = new ArrayList<>();
-    private List<Polygon> filledPolygons = new ArrayList<Polygon>();
-    private List<Integer> xPoly = new ArrayList<>();
-    private List<Integer> yPoly = new ArrayList<>();
-    private Polygon inputPolygon = new Polygon();
-    private List<Polygon> inputPolygons = new ArrayList<>();
+    private List<Polygon> polygons = new ArrayList<Polygon>();  //  List of normal polygons drawn
+    private List<Polygon> filledPolygons = new ArrayList<Polygon>(); // List of filled polygons drawn
+    private Polygon currentPolygon = new Polygon(); // Current polygon drawn
+    private Polygon currentFilledPolygon = new Polygon(); // Current filled polygon drawn
+    private List<Color> polyColor = new ArrayList<>();  // List of color corresponding to polygons
+    private List<Color> polyFilledColor = new ArrayList<>(); // List of color corresponding to filled polygons
+    private List<Integer> xPoly = new ArrayList<>();  // Store x coordinate of of each polygon in each line of vec file
+    private List<Integer> yPoly = new ArrayList<>(); // Store x coordinate of of each polygon in each line of vec file
+    private Polygon inputPolygon = new Polygon();    // A polygon from vec file
+    private List<Polygon> inputPolygons = new ArrayList<>(); // List of polygons from vec file
 
 
 
@@ -335,13 +335,13 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
      * @param y2
      */
 
-    public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2,Polygon polygon){
+    public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2,Polygon polygon,Color color){
 
         saveToStack(image);
         saveToHistoryStack(image);
         oldX = startX = x1;
         oldY = startY = y1;
-        brushColor = getCurrentColor();                 //get current color
+        brushColor = color;                 //get current color
         dragGraphics = (Graphics2D) image.getGraphics();  //convert Graphics
         dragGraphics.setColor(brushColor);              //set color
         dragGraphics.setBackground(getBackground());
@@ -391,21 +391,47 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     public void drawFromFile(Scanner scanner){
         while (scanner.hasNextLine()) {
             String[] splitArray = scanner.nextLine().split("\\s+");
+            Color c = Color.BLACK;
+            boolean fill = false;
+            if (!splitArray[0].equals("OFF") && splitArray.length == 2){
+                c = Color.decode(splitArray[1]);
+            }
 
-            if (splitArray[0].equals("RECTANGLE")){
-                currentTool = ToolFactory.createTool(1);
+            if (splitArray[0].equals("FILL") && !splitArray[1].equals("OFF")){
+                fill = true;
             }
-            if (splitArray[0].equals("PLOT")){
-                currentTool = ToolFactory.createTool(2);
+
+            if (splitArray[0].equals("FILL") && splitArray[1].equals("OFF")){
+                fill = false;
             }
-            if (splitArray[0].equals("LINE")){
-                currentTool = ToolFactory.createTool(3);
+
+            if(fill){
+                if (splitArray[0].equals("RECTANGLE")){
+                    currentTool = ToolFactory.createTool(6);
+                }
+                if (splitArray[0].equals("ELLIPSE")){
+                    currentTool = ToolFactory.createTool(7);
+                }
+                if (splitArray[0].equals("POLYGON")){
+                    currentTool = ToolFactory.createTool(8);
+                }
             }
-            if (splitArray[0].equals("ELLIPSE")){
-                currentTool = ToolFactory.createTool(4);
-            }
-            if (splitArray[0].equals("POLYGON")){
-                currentTool = ToolFactory.createTool(5);
+            else{
+                if (splitArray[0].equals("RECTANGLE")){
+                    currentTool = ToolFactory.createTool(1);
+                }
+                if (splitArray[0].equals("PLOT")){
+                    currentTool = ToolFactory.createTool(2);
+                }
+                if (splitArray[0].equals("LINE")){
+                    currentTool = ToolFactory.createTool(3);
+                }
+                if (splitArray[0].equals("ELLIPSE")){
+                    currentTool = ToolFactory.createTool(4);
+                }
+                if (splitArray[0].equals("POLYGON")){
+                    currentTool = ToolFactory.createTool(5);
+                }
             }
             //System.out.println("height" + Paint.squarePad.getHeight());
             //System.out.println("width" + Paint.squarePad.getWidth());
@@ -415,7 +441,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             if (splitArray[0].equals("PLOT")){
                 int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
                 int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-                setCoordinatesAndDraw(x1, y1, x1, y1,inputPolygon);
+                setCoordinatesAndDraw(x1, y1, x1, y1,inputPolygon,c);
             }
             else if (splitArray[0].equals("POLYGON")){
                 if(!xPoly.isEmpty() || !yPoly.isEmpty()){
@@ -436,14 +462,14 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 int[] yList = yPoly.stream().mapToInt(Integer::intValue).toArray();
                 inputPolygon = new Polygon(xList,yList,xPoly.size());
                 inputPolygons.add(inputPolygon);
-                setCoordinatesAndDraw(0, 0, 0, 0,inputPolygon);
+                setCoordinatesAndDraw(0, 0, 0, 0,inputPolygon,c);
             }
-            else {
+            else if (!splitArray[0].equals("PEN") || !splitArray[0].equals("FILL")){
                 int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
                 int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
                 int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
                 int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
-                setCoordinatesAndDraw(x1, y1, x2, y2,inputPolygon);
+                setCoordinatesAndDraw(x1, y1, x2, y2,inputPolygon,c);
 
             }
             //System.out.println(savedImagesStack);
