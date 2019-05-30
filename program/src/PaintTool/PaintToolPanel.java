@@ -19,9 +19,7 @@ public class PaintToolPanel extends JPanel {
 
     private JComboBox fillerType;
 
-    private Icon pencil = new ImageIcon(getClass().getResource("images/IMG_OLOVKA_48.png"));
     private Icon clear = new ImageIcon(getClass().getResource("images/eraser.png"));
-    private Icon undo = new ImageIcon(getClass().getResource("images/undo.png"));
     private Icon rectangle = new ImageIcon(getClass().getResource("images/rectangle.png"));
     private Icon plot = new ImageIcon(getClass().getResource("images/dot1.jpg"));
     private Icon line = new ImageIcon(getClass().getResource("images/line-tool.png"));
@@ -43,10 +41,10 @@ public class PaintToolPanel extends JPanel {
         fillerType.addActionListener(handler);                  //add combo box listener
         fillerType.setFont(new Font("Cambria", Font.BOLD, 16)); //set font
 
-        toolPanel.setLayout(new GridLayout(4, 2));              //customize the tool panel
+        toolPanel.setLayout(new GridLayout(3, 2));              //customize the tool panel
         toolPanel.setBackground(Color.DARK_GRAY);
         toolPanel.setPreferredSize(new Dimension(200, 300));
-        toolButtons = new ToolButton[8];                        //create new array of buttons
+        toolButtons = new ToolButton[6];                        //create new array of buttons
 
         addToolButtons();
         addEmptyToolButtons();
@@ -58,24 +56,22 @@ public class PaintToolPanel extends JPanel {
     }
 
     private void addToolButtons() {
-        toolButtons[0] = new ToolButton(pencil, ToolFactory.createTool(ToolFactory.PENCIL_TOOL));
-        toolButtons[1] = new ToolButton(clear, ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
-        toolButtons[2] = new ToolButton(undo, ToolFactory.createTool(ToolFactory.UNDO_TOOL));
-        toolButtons[3] = new ToolButton(plot, ToolFactory.createTool(ToolFactory.PLOT_TOOL));
-        toolButtons[4] = new ToolButton(line, ToolFactory.createTool(ToolFactory.LINE_TOOL));
+        toolButtons[0] = new ToolButton(clear, ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
+        toolButtons[1] = new ToolButton(plot, ToolFactory.createTool(ToolFactory.PLOT_TOOL));
+        toolButtons[2] = new ToolButton(line, ToolFactory.createTool(ToolFactory.LINE_TOOL));
     }
 
     private void addEmptyToolButtons(){
-        toolButtons[5] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
-        toolButtons[6] = new ToolButton(ellipse,ToolFactory.createTool(ToolFactory.ELLIPSE_TOOL));
-        toolButtons[7] = new ToolButton(polygon,ToolFactory.createTool(ToolFactory.POLYGON_TOOL));
+        toolButtons[3] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
+        toolButtons[4] = new ToolButton(ellipse,ToolFactory.createTool(ToolFactory.ELLIPSE_TOOL));
+        toolButtons[5] = new ToolButton(polygon,ToolFactory.createTool(ToolFactory.POLYGON_TOOL));
     }
 
 
     private void addFilledToolButtons(){
-        toolButtons[5] = new ToolButton(filledRect,ToolFactory.createTool(ToolFactory.FILLED_RECTANGLE_TOOL));
-        toolButtons[6] = new ToolButton(filledEllipse,ToolFactory.createTool(ToolFactory.FILLED_ELLIPSE_TOOL));
-        toolButtons[7] = new ToolButton(filledPoly,ToolFactory.createTool(ToolFactory.FILLED_POLYGON_TOOL));
+        toolButtons[3] = new ToolButton(filledRect,ToolFactory.createTool(ToolFactory.FILLED_RECTANGLE_TOOL));
+        toolButtons[4] = new ToolButton(filledEllipse,ToolFactory.createTool(ToolFactory.FILLED_ELLIPSE_TOOL));
+        toolButtons[5] = new ToolButton(filledPoly,ToolFactory.createTool(ToolFactory.FILLED_POLYGON_TOOL));
     }
 
 private class  ComboBoxHandler implements ActionListener  //combo box (filling type) even handling
