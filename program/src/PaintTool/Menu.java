@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Scanner;
+import java.util.Stack;
+
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 
 
 public class Menu extends JMenuBar implements ActionListener {
@@ -26,6 +29,7 @@ public class Menu extends JMenuBar implements ActionListener {
     private JMenuItem itemImport;
     private JMenuItem itemExport;
     private static JMenuItem itemUndo;
+    private static JMenuItem itemHistory;
 
     private final JFileChooser fc = new JFileChooser();
 
@@ -71,16 +75,26 @@ public class Menu extends JMenuBar implements ActionListener {
 
 
 
+
+
         // Edit menu
         menuEdit = new JMenu("Edit");
 
         itemUndo = new JMenuItem("Undo");
         itemUndo.setEnabled(false);
-
+        //itemUndo.setAccelerator(KeyStroke.getKeyStroke('Z', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        itemUndo.setAccelerator(KeyStroke.getKeyStroke('Z', CTRL_DOWN_MASK));
         menuEdit.add(itemUndo);
         itemUndo.addActionListener(this);
 
+        // Redo - prepare for history
+        itemHistory = new JMenu("History");
+
+        menuEdit.add(itemHistory);
+        itemHistory.addActionListener(this);
+
         menuControl = new JMenu("Control");
+
         menuHelp = new JMenu("Help");
         menuAbout = new JMenu("About");
 
@@ -126,7 +140,12 @@ public class Menu extends JMenuBar implements ActionListener {
 
         }
         if (source == itemExport){ // export file
-            String outfile = Paint.squarePad.getOutFile();
+            Stack<String> outLines = Paint.squarePad.getOutLines();
+            String outfile = "";
+            for (String line: outLines){
+                outfile += line;
+            }
+
             JFileChooser fileChooser = new JFileChooser();
             int retval = fileChooser.showSaveDialog(this);
             if (retval == JFileChooser.APPROVE_OPTION) {
@@ -136,15 +155,17 @@ public class Menu extends JMenuBar implements ActionListener {
                 }
 
                 // Make sure file extension is ".vec"
-                String fileName = "";
+                String fileName;
                 int index = file.getName().indexOf(".");
                 if (index == -1){
                     fileName = file.getParentFile() + "/" + file.getName() + ".vec";
                 }
                 else {
+                    fileName = file.getParentFile() + "/" + file.getName();
+                    /*
                     String fileNameNoExtension = file.getName().substring(0, index);
                     fileName = file.getParentFile() + "/" + fileNameNoExtension + ".vec";
-                    System.out.println(fileName);
+                    System.out.println(fileName);*/
                 }
 
                 try {
@@ -166,6 +187,10 @@ public class Menu extends JMenuBar implements ActionListener {
             if (Paint.squarePad.getStackSize() == 0){
                 itemUndo.setEnabled(false);
             }
+        }
+        if (source == itemHistory){
+
+
         }
     }
 /*

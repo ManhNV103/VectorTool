@@ -22,6 +22,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     private Menu menuBar;
     public static ColorPalette colorPalette;
     public static PaintToolPanel paintToolPanel;
+    public static DrawingHistory historyPanel;
 
     /**
      * Constructor
@@ -63,6 +64,10 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         paintToolPanel.add(colorPalette,BorderLayout.SOUTH);
 
         getContentPane().add(paintToolPanel,BorderLayout.WEST);
+
+        historyPanel = new DrawingHistory();
+        getContentPane().add(historyPanel,BorderLayout.EAST);
+
 
 
         repaint();

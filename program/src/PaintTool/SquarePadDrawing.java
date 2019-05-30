@@ -30,7 +30,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     // an image to draw on
     private Image image;
     private Image backGround; //undonew
-    private ImageStack<Image> savedImagesStack = new ImageStack<>(); //undonew
+    private Stack<Image> savedImagesStack = new Stack<>(); //undonew
+    private ImageStack<Image> historyImagesStack = new ImageStack<>(); // historyStack
+
 
     // Graphics
     private Graphics2D graphics;
@@ -53,6 +55,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     public ToolDetails currentToolDetails;  //isSelected tool details
 
     private String outfile = ""; // this records drawing actions (the content of the export file)
+    private Stack<String> outLines = new Stack<String>();
+    private Image blankImage;
 
 
     //Now for the constructors
@@ -160,6 +164,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
         if (currentTool.toolType == ToolFactory.POLYGON_TOOL)
         {
+            filledPolygon = false;
+            return;
         }
 
         if (currentTool.toolType == ToolFactory.FILLED_ELLIPSE_TOOL)            //if isSelected tool is FILLED ELLIPSE
@@ -277,9 +283,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
     public void clear(){
         graphics.fillRect(0, 0, getSize().width, getSize().height);
-        graphics.setPaint(Color.BLACK);
         graphics.dispose();
-        polygons.clear();
         repaint();
 
     }
@@ -317,6 +321,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2){
 
         saveToStack(image);
+        saveToHistoryStack(image);
         oldX = startX = x1;
         oldY = startY = y1;
         brushColor = getCurrentColor();                 //get current color
@@ -338,16 +343,16 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 repaintRectangle(startX, startY, currentX, currentY);
                 // Record what we've drawn
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
-                    outfile += "LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
-                    outfile += "RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
-                    outfile += "ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
 
@@ -357,7 +362,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 // Record the plot we've drawn
-                outfile += "PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n";
+                outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
 
             }
         }
@@ -442,8 +447,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     {
         if (isDrawing)                    // Ignore mouse presses that occur when user is already isDrawing a curve
             return;                     // if the user presses two mouse toolButtons at the same time
-
         saveToStack(image);
+
 
         oldX = startX = evt.getX();    // save mouse coordinates.
         oldY = startY = evt.getY();
@@ -460,8 +465,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
      * @return
      */
 
-    public String getOutFile(){
-        return outfile;
+    public Stack<String> getOutLines(){
+        return outLines;
     }
 
     /**
@@ -477,6 +482,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         currentX = evt.getX();    //save mouse coordinates
         currentY = evt.getY();
 
+
         if (currentTool.toolType != ToolFactory.PENCIL_TOOL && currentTool.toolType != ToolFactory.CLEAR_TOOL && currentTool.toolType != ToolFactory.UNDO_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
@@ -487,16 +493,16 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 repaintRectangle(startX, startY, currentX, currentY);
                 // Record what we've drawn
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
-                    outfile += "LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
-                    outfile += "RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
-                    outfile += "ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n";
+                    outLines.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
 
@@ -507,7 +513,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 // Record what we've drawn
-                outfile += "PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n";
+                outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
 
             }
         }
@@ -556,11 +562,36 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     }
 
 
-    //Undonew
+    /**
+     * Undo/Redo methods
+     */
+
     public void undo() {
         if (savedImagesStack.size() > 0) {
+            if (outLines.size() > 0){
+               outLines.pop();
+            }
+            setImage(savedImagesStack.pop());
+
+
+        }
+    }
+
+    public void popImagesFromStack(int i){
+        for (int k = 0; k < i; k++){
             setImage(savedImagesStack.pop());
         }
+    }
+    public Stack<Image> getImageStack(){
+        return savedImagesStack;
+    }
+
+    public void blankImage(){
+         setImage(savedImagesStack.get(0));
+    }
+
+    public void renderRequestImage(int i){      
+        setImage(savedImagesStack.get(i));
     }
 
     private void setImage(Image img) {
@@ -590,9 +621,19 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         }
     }
 
+    private void saveToHistoryStack(Image img) {
+        historyImagesStack.push(copyImage(img));
+    }
+
     public int getStackSize(){
         return savedImagesStack.size();
     }
+
+
+
+
+
+    ////
 
 
     protected void addPoint(int x, int y) {
@@ -655,6 +696,4 @@ class ImageStack<E> extends Stack<E> {
         }*/
         return super.push((E) object);
     }
-
-
 }
