@@ -362,7 +362,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * Method used to set the current pen color and add drawing commands into the output file
      * @param clr
      */
-    public void setCurrentPenColor(Color clr)
+    public  void setCurrentPenColor(Color clr)
     {
         penColor = clr;
         currentToolDetails.setColor(clr);
@@ -535,6 +535,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
         }
     }
+
 
 
     /**

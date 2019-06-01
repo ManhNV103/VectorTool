@@ -10,7 +10,7 @@ import java.awt.*;
  * A class that extends the Tool class and provides a method for customizing the color
  */
 public class ToolDetails extends Tool {
-    protected Color color;
+    private Color color;
 
     /**
      * Constructors
