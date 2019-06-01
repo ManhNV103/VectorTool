@@ -1,4 +1,13 @@
+/**
+ * JAVA DRAWING APP
+ * Tran Quang Huy & Nguyen Van Manh
+ */
+
 package PaintTool;
+
+/**
+ * Class that extends the Exception to implement Exception in the application
+ */
 
 public class VecFileException extends Exception {
     public VecFileException() {

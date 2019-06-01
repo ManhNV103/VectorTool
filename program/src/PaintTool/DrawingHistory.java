@@ -1,3 +1,8 @@
+/**
+ * JAVA DRAWING APP
+ * Tran Quang Huy & Nguyen Van Manh
+ */
+
 package PaintTool;
 
 import javax.swing.*;
@@ -9,6 +14,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * A class that extends JPanel and implements ActionListener for showing all drawing operations supporting Undo option
+ */
 public class DrawingHistory extends JPanel implements ActionListener {
 
     private JLabel history;
@@ -23,8 +31,9 @@ public class DrawingHistory extends JPanel implements ActionListener {
         this.createGUI();
     }
 
-
-
+    /**
+     * Create interface of panel showing history of drawing operations
+     */
     public void createGUI(){
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -44,8 +53,6 @@ public class DrawingHistory extends JPanel implements ActionListener {
         historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
         //historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
         this.add(historyPanel);
-
-
 
 
     }
@@ -118,6 +125,9 @@ public class DrawingHistory extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * Mouse Events
+     */
     class MyMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent evt) {
             /*

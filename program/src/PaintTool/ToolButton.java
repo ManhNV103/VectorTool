@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A class that extends JButton and implements ActionListener for each Tool button 
+ */
 public class ToolButton extends JButton implements ActionListener {
 
     public JLabel label;

@@ -8,6 +8,10 @@ package PaintTool;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A class that extends JPanel and allows to select the color to set background
+ */
+
 public class ColorPanel extends JPanel {
 
     /**

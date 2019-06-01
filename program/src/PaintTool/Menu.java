@@ -17,8 +17,9 @@ import java.util.Stack;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 
-
-
+/**
+ * A class that extends the JMenuBar and adds necessary menu items
+ */
 public class Menu extends JMenuBar implements ActionListener {
 
     private JMenu menuFile;
@@ -75,8 +76,6 @@ public class Menu extends JMenuBar implements ActionListener {
         itemExport.addActionListener(this);
 
 
-
-
         // Edit menu
         menuEdit = new JMenu("Edit");
 
@@ -112,6 +111,11 @@ public class Menu extends JMenuBar implements ActionListener {
 
     }
 
+    /**
+     * Checking whether the input is vec file
+     * @param filename
+     * @return
+     */
     public boolean isVecFile(String filename){
         if (filename.endsWith(".vec")){
             return true;
@@ -120,7 +124,10 @@ public class Menu extends JMenuBar implements ActionListener {
     }
 
 
-
+    /**
+     * Method used to navigate and filter the input files, export to new output file and implement Undo command
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Component source = (Component) e.getSource();

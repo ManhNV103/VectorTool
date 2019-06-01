@@ -7,6 +7,9 @@
 
 package PaintTool;
 
+/**
+ * A class represent the Tool being used in drawing operation
+ */
 public class Tool {
     public int toolType;
     public Tool (int type)

@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A class contains instances of ToolButton classes and a reset button for clearing selected colors
+ */
 public class PaintToolPanel extends JPanel {
 
 
@@ -72,7 +75,6 @@ public class PaintToolPanel extends JPanel {
     {
         public void actionPerformed(ActionEvent e){
             if(e.getSource() == resetButton){
-                Paint.colorPalette.deselectAll();
                 Paint.squarePad.setCurrentFillColor(new Color(1f,0f,0f,0 ));
                 Paint.squarePad.fill =false;
                 Paint.squarePad.outLines.push("FILL OFF\n");

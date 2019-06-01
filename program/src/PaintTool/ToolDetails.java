@@ -6,10 +6,17 @@
 package PaintTool;
 import java.awt.*;
 
+/**
+ * A class that extends the Tool class and provides a method for customizing the color
+ */
 public class ToolDetails extends Tool {
     protected Color color;
 
-    // Constructors
+    /**
+     * Constructors
+     * @param brushColor
+     * @param type
+     */
 
     public ToolDetails(Color brushColor, int type)
     {
@@ -17,13 +24,20 @@ public class ToolDetails extends Tool {
         color = brushColor;
     }
 
-    // Methods
+    /**
+     * Get color of the Tool
+     * @return
+     */
 
     public Color getColor()
     {
         return color;
     }
 
+    /**
+     * Set color of the Tool
+     * @param clr
+     */
     public void setColor(Color clr)
     {
         color = clr;
