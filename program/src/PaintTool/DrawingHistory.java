@@ -71,6 +71,12 @@ public class DrawingHistory extends JPanel implements ActionListener {
             Stack<String> stack = Paint.squarePad.getImageRecordStack();
 
             if(stack.size() == imageStacks.size()){
+                historyPanel.add(new JLabel("   Double click a"));
+                historyPanel.add(new JLabel("   button for the"));
+                historyPanel.add(new JLabel("   corresponding "));
+                historyPanel.add(new JLabel("   state before"));
+                historyPanel.add(new JLabel("   continuing drawing."));
+                historyPanel.add(new JLabel("    "));
                 for(int i = 0; i < imageStacks.size(); i++){
                     String label;
                     if (stack.size() >= i){
@@ -90,6 +96,7 @@ public class DrawingHistory extends JPanel implements ActionListener {
                 historyPanel.add(new JLabel("   actions > number"));
                 historyPanel.add(new JLabel("   of records"));
             }
+
 
             for(int i = 0; i < btnLists.size(); i++){
                 historyPanel.add(btnLists.get(i));
