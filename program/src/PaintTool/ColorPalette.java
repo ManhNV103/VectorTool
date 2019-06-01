@@ -14,8 +14,11 @@ public class ColorPalette extends JPanel {
 
     protected ColorButton colorButtons[];     //array of ColorButton objects
     public static JPanel selectedColorDisplay;    //JPanel displaying the currently isSelected color
+    public static JPanel fillColorDisplay;
+    public static JPanel penColorDisplay;
+    public static Color selectedPenColor;
+    public static Color selectedFillColor;
     protected Color colors[];                 //array of colors
-    public static Color selectedColor;            //isSelected selectedColor
 
     public ColorPalette() {
         setBackground(Color.DARK_GRAY);                //set the background of the palette
@@ -26,21 +29,46 @@ public class ColorPalette extends JPanel {
             colors[i] = Color.getHSBColor((float) i / (float) 36, 0.85f, 1.0f);
         }
 
-        selectedColor = Color.black;                                    //set initial selectedColor to black
-        selectedColorDisplay = new JPanel();                            //create a new JPanel for holding the selectedColor
-        selectedColorDisplay.setPreferredSize(new Dimension(200, 200));   //set the size of the panel
 
-        selectedColorDisplay.addMouseListener(new MouseAdapter() {      //add a mouse listener
+        selectedFillColor = Color.GRAY;                                    //set initial selectedColor to black
+        fillColorDisplay = new JPanel();                            //create a new JPanel for holding the selectedColor
+        fillColorDisplay.setPreferredSize(new Dimension(100, 150));   //set the size of the panel
+        fillColorDisplay.add(new JLabel("Fill Color"),BorderLayout.CENTER);
+        fillColorDisplay.addMouseListener(new MouseAdapter() {      //add a mouse listener
 
             public void mousePressed(MouseEvent event) {                //when the user presses the mouse button
                 {                                                       //display the JColorChooser window
-                    selectedColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.brushColor));
-                    selectedColor = selectedColorDisplay.getBackground();                                   //change the isSelected color
-                    Paint.squarePad.currentToolDetails.setColor(selectedColorDisplay.getBackground());     //change the ToolDetails color
-                    Paint.squarePad.setCurrentColor(selectedColor);                                   //change the DrawingPanel brushColor
+                    fillColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.fillColor));
+                    selectedFillColor = fillColorDisplay.getBackground();                                   //change the isSelected color                     //change the DrawingPanel brushColor
+                    Paint.squarePad.setCurrentFillColor(selectedFillColor);
                 }
             }
         });
+
+
+        selectedPenColor = Color.GRAY;
+        penColorDisplay = new JPanel();
+        penColorDisplay.setBackground(Color.WHITE);
+        penColorDisplay.setPreferredSize(new Dimension(100, 150));
+        penColorDisplay.add(new JLabel("Pen Color"),BorderLayout.CENTER);
+        penColorDisplay.addMouseListener(new MouseAdapter(){
+            public void mousePressed(MouseEvent event)
+            {
+                penColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.penColor));
+                selectedPenColor = penColorDisplay.getBackground();                                   //change the isSelected color
+                Paint.squarePad.currentToolDetails.setColor(penColorDisplay.getBackground());     //change the ToolDetails color
+                Paint.squarePad.setCurrentPenColor(selectedPenColor);
+            }
+        });
+
+
+
+        selectedColorDisplay = new JPanel();
+        selectedColorDisplay.setLayout(new BoxLayout(selectedColorDisplay,BoxLayout.X_AXIS));
+        selectedColorDisplay.add(penColorDisplay);
+        selectedColorDisplay.add(fillColorDisplay);
+
+
 
         JPanel colorButtonsGrid = new JPanel();                     //create the ColorButton grid
         colorButtonsGrid.setBackground(Color.DARK_GRAY);
@@ -53,8 +81,8 @@ public class ColorPalette extends JPanel {
 
         ColorPanel colorButtonsPanel = new ColorPanel(Color.DARK_GRAY);      //create the ColorPanel for holding the ColorButtons
         colorButtonsPanel.setLayout(new BorderLayout(4, 4));
-        colorButtonsPanel.add(selectedColorDisplay, "South");
-        colorButtonsPanel.add(colorButtonsGrid, "Center");
+        colorButtonsPanel.add(selectedColorDisplay, "North");
+        colorButtonsPanel.add(colorButtonsGrid, "South");
         JPanel colorButtonRows = new JPanel();                              //create the ColorButton panels
         colorButtonRows.setLayout(new BorderLayout());
         colorButtonRows.add(new ColorPanel(Color.DARK_GRAY), "West");

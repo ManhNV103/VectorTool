@@ -16,9 +16,6 @@ public class ToolFactory {
     private static Tool ellipseTool;
     private static Tool polyTool;
     private static Tool currentTool;
-    private static Tool fillRectTool;
-    private static Tool fillEllipseTool;
-    private static Tool fillPolyTool;
 
     //static constant variables used to differentiate the tool classes
     public static final int CLEAR_TOOL = 0;
@@ -27,9 +24,6 @@ public class ToolFactory {
     public static final int LINE_TOOL = 3;
     public static final int ELLIPSE_TOOL = 4;
     public static final int POLYGON_TOOL = 5;
-    public static final int FILLED_RECTANGLE_TOOL = 6;
-    public static final int FILLED_ELLIPSE_TOOL = 7;
-    public static final int FILLED_POLYGON_TOOL = 8;
 
 
 
@@ -75,20 +69,6 @@ public class ToolFactory {
                 currentTool = polyTool;
                 break;
 
-            case 6 :   if (fillRectTool == null  )
-                fillRectTool =  new Tool(FILLED_RECTANGLE_TOOL);
-                currentTool = fillRectTool;
-                break;
-
-            case 7 :   if (fillEllipseTool == null  )
-                fillEllipseTool =  new Tool(FILLED_ELLIPSE_TOOL);
-                currentTool = fillEllipseTool;
-                break;
-
-            case 8 :   if (fillPolyTool == null  )
-                fillPolyTool =  new Tool(FILLED_POLYGON_TOOL);
-                currentTool = fillPolyTool;
-                break;
         }
 
         return currentTool;
