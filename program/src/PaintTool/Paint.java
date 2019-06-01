@@ -80,10 +80,15 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     //set starting color to be used for drawing
     public void setStartingColor()     //set starting color to be used for drawing
     {
-        ColorPalette.selectedColorDisplay.setBackground(Color.black);
-        ColorPalette.selectedColor = ColorPalette.selectedColorDisplay.getBackground();
-        squarePad.currentToolDetails.setColor(ColorPalette.selectedColorDisplay.getBackground());
-        squarePad.brushColor = ColorPalette.selectedColor;
+        ColorPalette.penColorDisplay.setBackground(Color.GRAY);
+        ColorPalette.selectedPenColor = ColorPalette.penColorDisplay.getBackground();
+        squarePad.currentToolDetails.setColor(ColorPalette.penColorDisplay.getBackground());
+        squarePad.penColor = ColorPalette.selectedPenColor;
+
+        ColorPalette.fillColorDisplay.setBackground(Color.WHITE);
+        ColorPalette.selectedFillColor = ColorPalette.fillColorDisplay.getBackground();
+        squarePad.fillColor = ColorPalette.selectedFillColor;
+
     }
 
 

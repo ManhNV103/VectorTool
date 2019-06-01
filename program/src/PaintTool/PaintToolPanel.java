@@ -16,8 +16,7 @@ public class PaintToolPanel extends JPanel {
     //Initialize variables
 
     protected ToolButton toolButtons[];
-
-    private JComboBox fillerType;
+    private JButton resetButton;
 
     private Icon clear = new ImageIcon(getClass().getResource("images/eraser.png"));
     private Icon rectangle = new ImageIcon(getClass().getResource("images/rectangle.png"));
@@ -25,9 +24,6 @@ public class PaintToolPanel extends JPanel {
     private Icon line = new ImageIcon(getClass().getResource("images/line-tool.png"));
     private Icon ellipse = new ImageIcon(getClass().getResource("images/oval.png"));
     private Icon polygon = new ImageIcon(getClass().getResource("images/polygon.png"));
-    private Icon filledRect = new ImageIcon(getClass().getResource("images/filled-rectangle.png"));
-    private Icon filledEllipse = new ImageIcon(getClass().getResource("images/filled-oval.png"));
-    private Icon filledPoly = new ImageIcon(getClass().getResource("images/filled-polygon.png"));
     private JPanel toolPanel = new JPanel();
 
     public PaintToolPanel(){
@@ -35,72 +31,51 @@ public class PaintToolPanel extends JPanel {
         setPreferredSize(new Dimension(200, 0));
         setLayout(new BorderLayout(8, 8));
 
-        String[] fillerTypes = {"PENCIL", "FILLED"};             //create String array for the combo box
-        fillerType = new JComboBox(fillerTypes);                //create the combo box
-        ComboBoxHandler handler = new ComboBoxHandler();        //creating a new instance of the ComboBoxHandler inner class
-        fillerType.addActionListener(handler);                  //add combo box listener
-        fillerType.setFont(new Font("Cambria", Font.BOLD, 16)); //set font
-
         toolPanel.setLayout(new GridLayout(3, 2));              //customize the tool panel
         toolPanel.setBackground(Color.DARK_GRAY);
         toolPanel.setPreferredSize(new Dimension(200, 300));
         toolButtons = new ToolButton[6];                        //create new array of buttons
 
+        resetButton = new JButton("Clear fill color.");
+        resetButton.setHorizontalAlignment(SwingConstants.CENTER);
+        resetButton.addActionListener(new ClickResetListener());
+
+
+
+        JPanel radioButtonPanel = new JPanel();
+        BoxLayout radioButtonPanelLayout = new BoxLayout(radioButtonPanel,BoxLayout.X_AXIS);
+        radioButtonPanel.setLayout(radioButtonPanelLayout);
+        radioButtonPanel.add(resetButton);
+
         addToolButtons();
-        addEmptyToolButtons();
+
 
         for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);    //add buttons to tool panel
 
+
         this.add(toolPanel, BorderLayout.NORTH);
-        this.add(fillerType, BorderLayout.CENTER);
+        this.add(radioButtonPanel,BorderLayout.CENTER);
+
     }
 
     private void addToolButtons() {
         toolButtons[0] = new ToolButton(clear, ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
         toolButtons[1] = new ToolButton(plot, ToolFactory.createTool(ToolFactory.PLOT_TOOL));
         toolButtons[2] = new ToolButton(line, ToolFactory.createTool(ToolFactory.LINE_TOOL));
-    }
-
-    private void addEmptyToolButtons(){
         toolButtons[3] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
         toolButtons[4] = new ToolButton(ellipse,ToolFactory.createTool(ToolFactory.ELLIPSE_TOOL));
         toolButtons[5] = new ToolButton(polygon,ToolFactory.createTool(ToolFactory.POLYGON_TOOL));
     }
 
 
-    private void addFilledToolButtons(){
-        toolButtons[3] = new ToolButton(filledRect,ToolFactory.createTool(ToolFactory.FILLED_RECTANGLE_TOOL));
-        toolButtons[4] = new ToolButton(filledEllipse,ToolFactory.createTool(ToolFactory.FILLED_ELLIPSE_TOOL));
-        toolButtons[5] = new ToolButton(filledPoly,ToolFactory.createTool(ToolFactory.FILLED_POLYGON_TOOL));
-    }
-
-private class  ComboBoxHandler implements ActionListener  //combo box (filling type) even handling
-{
-    @Override
-    public void actionPerformed(ActionEvent e)
+    private class ClickResetListener implements ActionListener
     {
-        fillerType = (JComboBox)e.getSource();
-        int selectedValue = fillerType.getSelectedIndex();
-        if (selectedValue ==0)          //if empty
-        {
-            for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1);  //remove buttons
-            revalidate();
-            repaint();
-            addToolButtons();                     //add basic buttons
-            addEmptyToolButtons();                //add empty shape buttons
-            for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
-        }
-        else if (selectedValue == 1 )  //if filled
-        {
-            for (ToolButton toolButton1 : toolButtons) toolPanel.remove(toolButton1); //remove all buttons
-            revalidate();
-            repaint();
-            addToolButtons();                     //add basic buttons
-            addFilledToolButtons();                 //add empty shape buttons
-            for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);
+        public void actionPerformed(ActionEvent e){
+            if(e.getSource() == resetButton){
+                Paint.colorPalette.deselectAll();
+            }
         }
     }
-}
 
 
 }

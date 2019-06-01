@@ -46,12 +46,9 @@ public class ColorButton extends JPanel {
     {
         public void mousePressed(MouseEvent e)          //when the mouse button is pressed
         {
-            Paint.colorPalette.deselectAll();  //deselect all colors
+            Paint.colorPalette.deselectAll();  //deselect all colorsCol
             isSelected = true; //set the current selectedColor to isSelected
-            Paint.squarePad.setCurrentColor(color); //set the brush selectedColor of the draw panel to the isSelected selectedColor
-            ColorPalette.selectedColorDisplay.setBackground(color); //set the selectedColor of the selectedColorDisplay
             repaint();                            //repaint the main application window
-
         }
         public void mouseReleased(MouseEvent e){ }
 
