@@ -41,7 +41,6 @@ public class ColorPalette extends JPanel {
                     fillColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.fillColor));
                     selectedFillColor = fillColorDisplay.getBackground();                                   //change the isSelected color                     //change the DrawingPanel brushColor
                     Paint.squarePad.setCurrentFillColor(selectedFillColor);
-                    System.out.println("set fill color");
                 }
             }
         });
@@ -58,7 +57,7 @@ public class ColorPalette extends JPanel {
                 penColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.penColor));
                 selectedPenColor = penColorDisplay.getBackground();                                   //change the isSelected color
                 Paint.squarePad.currentToolDetails.setColor(penColorDisplay.getBackground());     //change the ToolDetails color
-                Paint.squarePad.setCurrentPenColor(Color.BLUE);
+                Paint.squarePad.setCurrentPenColor(selectedPenColor);
             }
         });
 

@@ -192,7 +192,7 @@ public class Menu extends JMenuBar implements ActionListener {
                     exception.printStackTrace();
                 }
             }
-            System.out.println(outfile);
+            //System.out.println(outfile);
 
         }
         if (source == itemUndo){  // import file

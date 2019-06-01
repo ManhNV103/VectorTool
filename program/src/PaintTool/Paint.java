@@ -57,7 +57,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         getContentPane().add(paintToolPanel,BorderLayout.WEST);
 
         historyPanel = new DrawingHistory();
-        getContentPane().add(historyPanel,BorderLayout.EAST);
+        getContentPane().add(new JScrollPane(historyPanel),BorderLayout.EAST);
 
         // Create draw PadDraw
         squarePad = new SquarePadDrawing();

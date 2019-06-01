@@ -68,12 +68,12 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     public ToolDetails currentToolDetails;  //isSelected tool details
 
     private String outfile = ""; // this records drawing actions (the content of the export file)
-    private Stack<String> outLines = new Stack<String>();
+    public Stack<String> outLines = new Stack<String>();
     //private Image blankImage;
     private Color transparent = new Color(1f,0f,0f,0 );
 
 
-    private boolean fill;
+    public boolean fill;
 
 
     //Now for the constructors
@@ -133,7 +133,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     }*/
 
-  /*  /**
+    /*  /**
      * Method used to draw a polygon based on the number of points
      * @param graphics Graphics class
      * @param polygon the selected polygon
@@ -202,7 +202,6 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
                 outLines.push(temp);
                 imageRecordStack.push(temp);
                 repaint();
-                // save to file
 
             }
 
@@ -276,11 +275,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         {
             graphics2D.setColor(penColor);
             graphics2D.drawRect(positionX, positionY, width, height);
-
-            graphics2D.setColor(fillColor);
-            graphics2D.fillRect(positionX + 1, positionY + 1, width - 1, height - 1);
-
-
+            if(fill){
+                graphics2D.setColor(fillColor);
+                graphics2D.fillRect(positionX + 1, positionY + 1, width - 1, height - 1);
+            }
             return;
         }
 
@@ -289,8 +287,11 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             graphics2D.setColor(penColor);
             graphics2D.drawOval(positionX, positionY, width, height);
 
-            graphics2D.setColor(fillColor);
-            graphics2D.fillOval(positionX + 1, positionY + 1, width - 2, height - 2);
+            if(fill){
+                graphics2D.setColor(fillColor);
+                graphics2D.fillOval(positionX + 1, positionY + 1, width - 2, height - 2);
+            }
+
 
             return;
         }
@@ -302,8 +303,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             Polygon aPoly = new Polygon(xList, yList, xPolyList.size());
             graphics2D.setColor(penColor);
             graphics2D.drawPolygon(aPoly);
-            graphics2D.setColor(fillColor);
-            graphics2D.fillPolygon(aPoly);
+            if(fill){
+                graphics2D.setColor(fillColor);
+                graphics2D.fillPolygon(aPoly);
+            }
 
             xPoly.clear();
             yPoly.clear();
@@ -402,16 +405,27 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         }
     }
 
+    public static String toHexString(Color colour) throws NullPointerException {
+        String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
+        if (hexColour.length() < 6) {
+            hexColour = "000000".substring(0, 6 - hexColour.length()) + hexColour;
+        }
+        return "#" + hexColour;
+    }
+
 
     public void setCurrentPenColor(Color clr)
     {
         penColor = clr;
         currentToolDetails.setColor(clr);
+        outLines.push("PEN" + " " + toHexString(clr) + "\n");
     }
 
     public void setCurrentFillColor(Color clr)
     {
+        fill = true;
         fillColor = clr;
+        outLines.push("FILL" + " " + toHexString(clr) + "\n");
     }
 
 
@@ -472,7 +486,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
                     outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                     imageRecordStack.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
-                                    + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
                     outLines.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
@@ -609,13 +623,17 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
         if (splitArray[0].equals("PEN")){
             penColor = Color.decode(splitArray[1]);
+            outLines.push(line + "\n");
         }
 
         if (splitArray[0].equals("FILL") && !splitArray[1].equals("OFF")){
+            outLines.push(line + "\n");
             fillColor = Color.decode(splitArray[1]);
+            fill = true;
         }
 
         if (splitArray[0].equals("FILL") && splitArray[1].equals("OFF")){
+            outLines.push(line + "\n");
             fillColor = transparent; /// should be none
         }
 
@@ -876,12 +894,15 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             imageRecordStack.pop();
         }
 
+        System.out.println("pop pop");
+
         // don't delete the line where we fill/pen.
         int count = 0;
         for (int k = outLines.size() -1; k >=0; k--){
-            if(outLines.get(k).split(" ")[0] != "FILL" || outLines.get(k).split(" ")[0] != "PEN"){
+            if(!outLines.get(k).split(" ")[0].equals("FILL") && !outLines.get(k).split(" ")[0].equals("PEN")){
                 outLines.remove(k);
                 count++;
+                System.out.println(count);
             }
             if (count >= i - 1){
                 break;
@@ -894,7 +915,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     }
 
     public void blankImage(){
-         setImage(savedImagesStack.get(0));
+        setImage(savedImagesStack.get(0));
     }
 
     public void renderRequestImage(int i){

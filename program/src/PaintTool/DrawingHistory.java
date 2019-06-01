@@ -28,7 +28,7 @@ public class DrawingHistory extends JPanel implements ActionListener {
     public void createGUI(){
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        history = new JLabel("Drawing history:           ");
+        history = new JLabel(" DRAWING HISTORY:     ");
         this.add(history, BorderLayout.NORTH);
 
         updateBtn = new JButton("Show History");
@@ -69,21 +69,28 @@ public class DrawingHistory extends JPanel implements ActionListener {
 
             //
             Stack<String> stack = Paint.squarePad.getImageRecordStack();
-            for(String line: stack){
-                System.out.println(line.split(" ")[0]);
-            }
-            System.out.println("\n");
 
-            for(int i = 0; i < imageStacks.size(); i++){
-                String label = "New state";
-                if (stack.size() >= i){
-                    label = stack.get(i).split(" ")[0];
+            if(stack.size() == imageStacks.size()){
+                for(int i = 0; i < imageStacks.size(); i++){
+                    String label;
+                    if (stack.size() >= i){
+                        label = stack.get(i).split(" ")[0];
+                        JButton temp = new JButton(label);
+                        temp.addActionListener(this);
+                        temp.addMouseListener(new MyMouseListener());
+                        btnLists.add(temp);
+                    }
                 }
-                JButton temp = new JButton(label);
-                temp.addActionListener(this);
-                temp.addMouseListener(new MyMouseListener());
-                btnLists.add(temp);
+
             }
+            else{
+                updateBtn.setEnabled(true);
+                historyPanel.add(new JLabel("   Problem with image"));
+                historyPanel.add(new JLabel("   stacks: Number of"));
+                historyPanel.add(new JLabel("   actions > number"));
+                historyPanel.add(new JLabel("   of records"));
+            }
+
             for(int i = 0; i < btnLists.size(); i++){
                 historyPanel.add(btnLists.get(i));
                 revalidate();
