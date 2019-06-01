@@ -49,7 +49,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         padDraw.setLayout(new GridBagLayout());
         padDraw.add(squarePad);
 
-        getContentPane().add(new JScrollPane(padDraw), BorderLayout.CENTER);
+        getContentPane().add(padDraw, BorderLayout.CENTER);
 
         //Set the menu bar and add the label to the content pane.
         menuBar = new Menu();

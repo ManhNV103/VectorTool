@@ -7,6 +7,7 @@
 package PaintTool;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+
 
 
 public class Menu extends JMenuBar implements ActionListener {
@@ -75,8 +77,6 @@ public class Menu extends JMenuBar implements ActionListener {
 
 
 
-
-
         // Edit menu
         menuEdit = new JMenu("Edit");
 
@@ -112,28 +112,41 @@ public class Menu extends JMenuBar implements ActionListener {
 
     }
 
+    public boolean isVecFile(String filename){
+        if (filename.endsWith(".vec")){
+            return true;
+        }
+        return false;
+    }
+
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Component source = (Component) e.getSource();
         if (source == itemImport){  // import file
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(".VEC file", "vec");
+            fc.addChoosableFileFilter(filter);
+            fc.setFileFilter(filter);
             int returnVal = fc.showOpenDialog(Menu.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                String filename = file.getAbsolutePath();
-                // filter .vec file only.
-                // Read vec file.
-                try{
-                    Scanner scanner = new Scanner(new File(filename));
-                    Paint.squarePad.drawFromFile(scanner);
-                    scanner.close();
-                }
-                catch (FileNotFoundException exception) {
-                    exception.printStackTrace();
+                //String name = file.getName();
+                String fileName = file.getAbsolutePath();
+                if (isVecFile(fileName)){
+                    // filter .vec file only.
+                    // Read vec file.
+                    try{
+                        Scanner scanner = new Scanner(new File(fileName));
+                        Paint.squarePad.drawFromFile(scanner);
+                        scanner.close();
+                    }
+                    catch (FileNotFoundException exception) {
+                        exception.printStackTrace();
+                    }
                 }
 
-                System.out.println(filename);
+                //System.out.println(filename);
             }
             else if (returnVal == JFileChooser.CANCEL_OPTION) {
             }

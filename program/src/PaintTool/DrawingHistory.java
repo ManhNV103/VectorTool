@@ -12,7 +12,7 @@ import java.util.Stack;
 public class DrawingHistory extends JPanel implements ActionListener {
 
     private JLabel history;
-    private JButton updateBtn1;
+    private JButton updateBtn;
     private JButton blankBtn;
     private JPanel historyPanel;
     private ArrayList<JButton> btnLists = new ArrayList<>();
@@ -31,10 +31,9 @@ public class DrawingHistory extends JPanel implements ActionListener {
         history = new JLabel("Drawing history:           ");
         this.add(history, BorderLayout.NORTH);
 
-        updateBtn1 = new JButton("Update History");
-        this.add(updateBtn1);
-        updateBtn1.addMouseListener(new MyMouseListener());
-        updateBtn1.addActionListener(this);
+        updateBtn = new JButton("Show History");
+        this.add(updateBtn);
+        updateBtn.addActionListener(this);
 
         blankBtn = new JButton("New drawing");
         blankBtn.addActionListener(this);
@@ -43,6 +42,7 @@ public class DrawingHistory extends JPanel implements ActionListener {
 
         historyPanel = new JPanel();
         historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
+        //historyPanel.setLayout(new BoxLayout(historyPanel, BoxLayout.Y_AXIS));
         this.add(historyPanel);
 
 
@@ -54,8 +54,11 @@ public class DrawingHistory extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         Component source = (Component) e.getSource();
-        if (source == updateBtn1){
+        if (source == updateBtn){
             //imageStacks.clear();
+            updateBtn.setEnabled(false);
+            Paint.squarePad.updateImageOnRequest();
+            Paint.squarePad.setEnabled(false);
             imageStacks = Paint.squarePad.getImageStack();
             System.out.println("Stack length : " + imageStacks.size());
             //blankBtn.setVisible(true);
@@ -64,8 +67,19 @@ public class DrawingHistory extends JPanel implements ActionListener {
             revalidate();
             repaint();
 
+            //
+            Stack<String> stack = Paint.squarePad.getImageRecordStack();
+            for(String line: stack){
+                System.out.println(line.split(" ")[0]);
+            }
+            System.out.println("\n");
+
             for(int i = 0; i < imageStacks.size(); i++){
-                JButton temp = new JButton("State" + 1);
+                String label = "New state";
+                if (stack.size() >= i){
+                    label = stack.get(i).split(" ")[0];
+                }
+                JButton temp = new JButton(label);
                 temp.addActionListener(this);
                 temp.addMouseListener(new MyMouseListener());
                 btnLists.add(temp);
@@ -92,7 +106,19 @@ public class DrawingHistory extends JPanel implements ActionListener {
 
     class MyMouseListener extends MouseAdapter {
         public void mouseClicked(MouseEvent evt) {
+            /*
             if (SwingUtilities.isRightMouseButton(evt) && evt.getClickCount() == 1) {
+                int i = btnLists.indexOf(evt.getSource());
+                Paint.squarePad.renderRequestImage(i);
+                Paint.squarePad.popImagesFromStack(btnLists.size()-i);
+                historyPanel.removeAll();
+                revalidate();
+                repaint();
+                btnLists.clear();
+            }*/
+            if (evt.getClickCount() == 2) {
+                updateBtn.setEnabled(true);
+                System.out.println("double-click");
                 int i = btnLists.indexOf(evt.getSource());
                 Paint.squarePad.renderRequestImage(i);
                 Paint.squarePad.popImagesFromStack(btnLists.size()-i);
@@ -102,6 +128,7 @@ public class DrawingHistory extends JPanel implements ActionListener {
                 btnLists.clear();
             }
         }
+
 
 
     }

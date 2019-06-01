@@ -26,12 +26,15 @@ import java.util.Stack;
  *
  */
 
-class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListener {
+public class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListener {
     // an image to draw on
     private Image image;
     private Image backGround; //undonew
     private Stack<Image> savedImagesStack = new Stack<>(); //undonew
+    private Stack<String> imageRecordStack = new Stack<>(); // this only record drawn images for the undo (not including set color, fill). So if you need to record everything for importing/exporting files, use outLines Stack below instead.
     private ImageStack<Image> historyImagesStack = new ImageStack<>(); // historyStack
+
+    private Exception VecFileException;
 
 
     // Graphics
@@ -66,6 +69,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     private Stack<String> outLines = new Stack<String>();
     private Image blankImage;
 
+    private boolean fill;
+
 
     //Now for the constructors
     public SquarePadDrawing(){
@@ -76,6 +81,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         brushColor = Color.BLACK;                       //set initial brush color
         currentTool = ToolFactory.createTool(ToolFactory.LINE_TOOL);             //set initial painting tool
         currentToolDetails = new ToolDetails(brushColor,  ToolFactory.LINE_TOOL);     //set initial painting tool propertiesbrushColor
+        imageRecordStack.push("New drawings");
+        fill = false;
     }
 
     @Override
@@ -117,8 +124,6 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         }
         drawPolygon(graphics2D,currentPolygon,Color.BLACK,var);
         repaint();
-
-
 
     }
 
@@ -172,7 +177,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
             graphics2D.drawLine(pointX1, pointY1, pointX1, pointY1);
             repaint();
             return;
-            
+
         }
 
         if (currentTool.toolType == ToolFactory.CLEAR_TOOL){
@@ -363,13 +368,19 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
                     outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                                    + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
                     outLines.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
                     outLines.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
@@ -381,6 +392,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 // Record the plot we've drawn
                 outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
+                imageRecordStack.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
 
             }
         }
@@ -388,61 +400,151 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
         dragGraphics = null;
     }
 
-    public void drawFromFile(Scanner scanner){
-        while (scanner.hasNextLine()) {
-            String[] splitArray = scanner.nextLine().split("\\s+");
-            Color c = Color.BLACK;
-            boolean fill = false;
-            if (!splitArray[0].equals("OFF") && splitArray.length == 2){
+
+    public static void checkLine(String line) throws VecFileException {
+        String[] splitArray = line.split(" ");
+        if (!(splitArray[0].equals("FILL") || splitArray[0].equals("PEN") || splitArray[0].equals("PLOT") ||
+                splitArray[0].equals("RECTANGLE") || splitArray[0].equals("ELLIPSE") || splitArray[0].equals("POLYGON"))) {
+            throw new VecFileException("Invalid vec format: Wrong shapes");
+        } else {
+            if (splitArray[0].equals("FILL")) {
+                System.out.println("1");
+                if (!isColor(splitArray[1])) {
+                    System.out.println("2");
+                    throw new VecFileException("Invalid vec format: Color is not valid.");
+                }
+
+                if (splitArray.length != 2) {
+                    System.out.println("3");
+                    throw new VecFileException("Invalid format for FILL. Correct format: FILL [color]");
+                }
+            }
+            if (splitArray[0].equals("PEN")) {
+                if (!isColor(splitArray[1])) {
+                    throw new VecFileException("Invalid vec format: Color is not valid.");
+                }
+
+                if (splitArray.length != 2) {
+                    throw new VecFileException("Invalid format for PEN. Correct format: PEN [color]");
+                }
+            }
+            if (splitArray[0].equals("PLOT")) {
+                if (splitArray.length != 3) {
+                    throw new VecFileException("Invalid vec format for PLOT. Correct format: ");
+                }
+                if (!isValidNumber((splitArray[1]))){
+                    throw new VecFileException("Invalid vec format: Coordinates have to be numeric and in the range [0, 1]");
+                }
+            }
+
+
+            // more here
+
+        }
+    }
+
+    public static boolean isValidNumber(String strNum) {
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+
+        double num = Double.parseDouble(strNum);
+        if (num >= 0 && num <=1){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public static boolean isColor(String color){
+        try{
+            Color.decode(color);
+        }
+        catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+    public void drawLine(String line){
+
+        String[] splitArray = line.split("\\s+");
+        Color c = Color.BLACK;
+
+        if (!splitArray[1].equals("OFF") && splitArray.length == 2){ //0??
+            try {
                 c = Color.decode(splitArray[1]);
             }
-
-            if (splitArray[0].equals("FILL") && !splitArray[1].equals("OFF")){
-                fill = true;
+            catch(NumberFormatException exp){
+                System.out.println("Invalid color");
             }
 
-            if (splitArray[0].equals("FILL") && splitArray[1].equals("OFF")){
-                fill = false;
-            }
+        }
 
-            if(fill){
-                if (splitArray[0].equals("RECTANGLE")){
-                    currentTool = ToolFactory.createTool(6);
-                }
-                if (splitArray[0].equals("ELLIPSE")){
-                    currentTool = ToolFactory.createTool(7);
-                }
-                if (splitArray[0].equals("POLYGON")){
-                    currentTool = ToolFactory.createTool(8);
-                }
-            }
-            else{
-                if (splitArray[0].equals("RECTANGLE")){
-                    currentTool = ToolFactory.createTool(1);
-                }
-                if (splitArray[0].equals("PLOT")){
-                    currentTool = ToolFactory.createTool(2);
-                }
-                if (splitArray[0].equals("LINE")){
-                    currentTool = ToolFactory.createTool(3);
-                }
-                if (splitArray[0].equals("ELLIPSE")){
-                    currentTool = ToolFactory.createTool(4);
-                }
-                if (splitArray[0].equals("POLYGON")){
-                    currentTool = ToolFactory.createTool(5);
-                }
-            }
-            //System.out.println("height" + Paint.squarePad.getHeight());
-            //System.out.println("width" + Paint.squarePad.getWidth());
-            int h = getHeight();
-            int w = getWidth();
 
+        if (splitArray[0].equals("FILL") && !splitArray[1].equals("OFF")){
+            fill = true;
+        }
+
+        if (splitArray[0].equals("FILL") && splitArray[1].equals("OFF")){
+            fill = false;
+        }
+
+        if (splitArray[0].equals("PEN")){
+            //set color
+        }
+
+
+        /// Sai het roi. from here down
+
+        if(fill){
+            if (splitArray[0].equals("RECTANGLE")){
+                currentTool = ToolFactory.createTool(6);
+            }
+            if (splitArray[0].equals("ELLIPSE")){
+                currentTool = ToolFactory.createTool(7);
+            }
+            if (splitArray[0].equals("POLYGON")){
+                currentTool = ToolFactory.createTool(8);
+            }
+        }
+        else{
+            if (splitArray[0].equals("RECTANGLE")){
+                currentTool = ToolFactory.createTool(1);
+            }
             if (splitArray[0].equals("PLOT")){
-                int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
-                int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-                setCoordinatesAndDraw(x1, y1, x1, y1,inputPolygon,c);
+                currentTool = ToolFactory.createTool(2);
             }
+            if (splitArray[0].equals("LINE")){
+                currentTool = ToolFactory.createTool(3);
+            }
+            if (splitArray[0].equals("ELLIPSE")){
+                currentTool = ToolFactory.createTool(4);
+            }
+            if (splitArray[0].equals("POLYGON")){
+                currentTool = ToolFactory.createTool(5);
+            }
+        }
+
+
+        //System.out.println("height" + Paint.squarePad.getHeight());
+        //System.out.println("width" + Paint.squarePad.getWidth());
+        int h = getHeight();
+        int w = getWidth();
+
+        if (splitArray[0].equals("PLOT")){
+            int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
+            int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
+            setCoordinatesAndDraw(x1, y1, x1, y1,inputPolygon,c);
+        }
+            /*
             else if (splitArray[0].equals("POLYGON")){
                 if(!xPoly.isEmpty() || !yPoly.isEmpty()){
                     xPoly = new ArrayList<>();
@@ -463,18 +565,36 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 inputPolygon = new Polygon(xList,yList,xPoly.size());
                 inputPolygons.add(inputPolygon);
                 setCoordinatesAndDraw(0, 0, 0, 0,inputPolygon,c);
-            }
-            else if (!splitArray[0].equals("PEN") || !splitArray[0].equals("FILL")){
-                int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
-                int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-                int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
-                int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
-                setCoordinatesAndDraw(x1, y1, x2, y2,inputPolygon,c);
+            }*/
+        else if (!splitArray[0].equals("PEN") && !splitArray[0].equals("FILL")){
+            int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
+            int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
+            int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
+            int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
+            setCoordinatesAndDraw(x1, y1, x2, y2,inputPolygon,c);
 
-            }
-            //System.out.println(savedImagesStack);
+        }
 
-            repaint();
+        //System.out.println(savedImagesStack);
+
+        repaint();
+    }
+
+    public void drawFromFile(Scanner scanner){
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            try{
+                checkLine(line);
+                drawLine(line);
+            }
+            catch(VecFileException e){
+                System.out.println(e.getMessage());
+            }
+
+            // the whole thing after this should be inside try block.
+
+
+
 
             //System.out.println(splitArray[0]);
         }
@@ -520,7 +640,12 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     {
         if (isDrawing)                    // Ignore mouse presses that occur when user is already isDrawing a curve
             return;                     // if the user presses two mouse toolButtons at the same time
-        saveToStack(image);
+
+        if(currentTool.toolType != ToolFactory.POLYGON_TOOL && currentTool.toolType != ToolFactory.FILLED_POLYGON_TOOL){
+            saveToStack(image);
+        }
+        System.out.println("Stack length " + savedImagesStack.size());
+
 
 
         oldX = startX = evt.getX();    // save mouse coordinates.
@@ -540,6 +665,9 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
 
     public Stack<String> getOutLines(){
         return outLines;
+    }
+    public Stack<String> getImageRecordStack(){
+        return imageRecordStack;
     }
 
     /**
@@ -570,13 +698,20 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
                     outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+
                 }
                 if (currentTool.toolType == ToolFactory.RECTANGLE_TOOL){
                     outLines.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("RECTANGLE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL){
                     outLines.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                            + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
+                    imageRecordStack.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
                             + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
                 }
                 if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
@@ -589,6 +724,8 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                 drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
                 // Record what we've drawn
                 outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
+                imageRecordStack.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
+                        + (double) currentX / getWidth()  + " " + (double) currentY / getHeight() + " " + "\n");
 
             }
         }
@@ -639,18 +776,48 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
     public void undo() {
         if (savedImagesStack.size() > 0) {
             if (outLines.size() > 0){
-               outLines.pop();
+                outLines.pop();
             }
+
+            if (imageRecordStack.size() > 0){
+                imageRecordStack.pop();
+            }
+
+
+
             setImage(savedImagesStack.pop());
 
-
+            System.out.println(outLines.size());
+            System.out.println(imageRecordStack.size());
+            System.out.println(savedImagesStack.size());
         }
     }
 
+    public void updateImageOnRequest(){
+        saveToStack(image);
+    }
+
     public void popImagesFromStack(int i){
+        // pop i (last) elements from the stack
         for (int k = 0; k < i; k++){
             setImage(savedImagesStack.pop());
         }
+        for (int k = 0; k < i - 1; k++){
+            imageRecordStack.pop();
+        }
+
+        // don't delete the line where we fill/pen.
+        int count = 0;
+        for (int k = outLines.size() -1; k >=0; k--){
+            if(outLines.get(k).split(" ")[0] != "FILL" || outLines.get(k).split(" ")[0] != "PEN"){
+                outLines.remove(k);
+                count++;
+            }
+            if (count >= i - 1){
+                break;
+            }
+        }
+
     }
     public Stack<Image> getImageStack(){
         return savedImagesStack;
@@ -660,7 +827,7 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
          setImage(savedImagesStack.get(0));
     }
 
-    public void renderRequestImage(int i){      
+    public void renderRequestImage(int i){
         setImage(savedImagesStack.get(i));
     }
 
@@ -720,14 +887,17 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                     if (currentPolygon.npoints > 2) {
                         polygons.add(currentPolygon);
                     }
+                    saveToStack(image);
+                    System.out.println("Stack length " + savedImagesStack.size());
+
                     polyColor.add(brushColor);
                     currentPolygon = new Polygon();
                     repaint();
                 }
-            } else if (SwingUtilities.isRightMouseButton(e)) {
+            } /*else if (SwingUtilities.isRightMouseButton(e)) {
                 currentPolygon = new Polygon();
                 repaint();
-            }
+            }*/
         }
         else if(currentTool.toolType == ToolFactory.FILLED_POLYGON_TOOL){
             if (SwingUtilities.isLeftMouseButton(e)) {
@@ -738,14 +908,17 @@ class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListe
                     if (currentFilledPolygon.npoints > 2) {
                         filledPolygons.add(currentFilledPolygon);
                     }
+                    saveToStack(image);
+                    System.out.println("Stack length " + savedImagesStack.size());
                     polyFilledColor.add(brushColor);
                     currentFilledPolygon = new Polygon();
                     repaint();
                 }
-            } else if (SwingUtilities.isRightMouseButton(e)) {
+            }
+            /*else if (SwingUtilities.isRightMouseButton(e)) {
                 currentFilledPolygon = new Polygon();
                 repaint();
-            }
+            }*/
         }
 
     }
