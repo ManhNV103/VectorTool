@@ -70,7 +70,7 @@ public class Menu extends JMenuBar implements ActionListener {
         menuFile.add(itemImport);
         itemImport.addActionListener(this);
 
-        itemExport = new JMenuItem("Export");
+        itemExport = new JMenuItem("Save to File");
         menuFile.add(itemExport);
         itemExport.addActionListener(this);
 

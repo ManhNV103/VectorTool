@@ -50,18 +50,17 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     ///private Polygon currentFilledPolygon = new Polygon(); // Current filled polygon drawn
     private List<Color> polyColor = new ArrayList<>();  // List of color corresponding to polygons
     private List<Color> polyFilledColor = new ArrayList<>(); // List of color corresponding to filled polygons
-    private List<Integer> xPoly = new ArrayList<>();  // Store x coordinate of of each polygon in each line of vec file
-    private List<Integer> yPoly = new ArrayList<>(); // Store x coordinate of of each polygon in each line of vec file
-    private Polygon inputPolygon = new Polygon();    // A polygon from vec file
-    private List<Polygon> inputPolygons = new ArrayList<>(); // List of polygons from vec file
-    private RenderingHints renderHints; ///
+    private ArrayList<Integer> xPoly = new ArrayList<>();  // Store x coordinate of of each polygon in each line of vec file
+    private ArrayList<Integer> yPoly = new ArrayList<>(); // Store x coordinate of of each polygon in each line of vec file
 
 
 
-    int imageWidth, imageHeight;            // current width and height of OSI, used to check against the size of the window. If the size of the window changes, a new OSI is created
+
+
+    private int imageWidth, imageHeight;            // current width and height of OSI, used to check against the size of the window. If the size of the window changes, a new OSI is created
     private int startX, startY;         // the starting position of the mouse
     private boolean isDrawing;          // this is set to true when the user is isDrawing.
-    protected Boolean mousePressed;     //indicates if the mouse is pressed
+    private Boolean mousePressed;     //indicates if the mouse is pressed
     ///public Color brushColor;            // the selectedColor that is used for the figure that is  being drawn.
     public Color penColor;
     public Color fillColor;
@@ -71,6 +70,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     private String outfile = ""; // this records drawing actions (the content of the export file)
     private Stack<String> outLines = new Stack<String>();
     //private Image blankImage;
+    private Color transparent = new Color(1f,0f,0f,0 );
 
 
     private boolean fill;
@@ -83,12 +83,12 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         addMouseMotionListener(this);                   //add mouse motion listener
         mousePressed = false;                           //set mousePressed to false
         ///brushColor = Color.BLACK;                       //set initial brush color
-        penColor = Color.BLACK; ///
-        fillColor = Color.WHITE; /// should be none
         currentTool = ToolFactory.createTool(ToolFactory.LINE_TOOL);             //set initial painting tool
         currentToolDetails = new ToolDetails(penColor,  ToolFactory.LINE_TOOL);     //set initial painting tool propertiesbrushColor
         imageRecordStack.push("New drawings");
         fill = false;
+        penColor = Color.BLACK; ///
+        fillColor = transparent; /// should be none
     }
 
     @Override
@@ -111,6 +111,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * @param graphics Graphics class
      * @param polygons The list of polygons drawn by the user
      */
+    /*
     public void drawPolygonGraphics(Graphics2D graphics, Polygon currentPolygon, List<Polygon> polygons, List<Color> penColorList, List<Color> fillColorList)
     {
         for (Polygon polygon : polygons) {
@@ -130,15 +131,16 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         }
         drawPolygon(graphics,currentPolygon,Color.BLACK,Color.WHITE);
 
-    }
+    }*/
 
-    /**
+  /*  /**
      * Method used to draw a polygon based on the number of points
      * @param graphics Graphics class
      * @param polygon the selected polygon
      * @param penColor Color
      * @param fillColor Color
      */
+    /*
     private void drawPolygon(Graphics2D graphics, Polygon polygon, Color penColor, Color fillColor) {
         if (polygon.npoints < 3) {
             if (polygon.npoints == 1) {
@@ -157,6 +159,55 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             }
 
         }
+    }/*
+    /**
+     * Method used to record the number of mouse clicks to draw the polygon
+     * Click the left mouse to add a point to the polygon
+     * Double click the left mouse to complete a polygon
+     * Right click to delete the current polygon
+     * @param e
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(currentTool.toolType == ToolFactory.POLYGON_TOOL) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                if (e.getClickCount() == 1) {
+                    System.out.println("left tick");
+                    xPoly.add(currentX);
+                    yPoly.add(currentY);
+                    repaint();
+                    if(xPoly.size() % 2 ==0 && xPoly.size() > 0){
+                        int i = xPoly.size();
+                        graphics.drawLine(xPoly.get(i-2), yPoly.get(i-2), xPoly.get(i-1), yPoly.get(i-1));
+                    }
+                }
+            }
+            if (SwingUtilities.isRightMouseButton(e)) {
+                xPoly.add(currentX);
+                yPoly.add(currentY);
+                System.out.println("right tick");
+                saveToStack(image);
+                String temp = "POLYGON ";
+                for (int i = 0; i< xPoly.size(); i++){
+                    temp += (double) xPoly.get(i) / getWidth() + " " + (double) yPoly.get(i) /getHeight();
+                    if (i != xPoly.size() - 1){
+                        temp += " ";
+                    }
+                    else {
+                        temp += "\n";
+                    }
+                }
+
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
+                outLines.push(temp);
+                imageRecordStack.push(temp);
+                repaint();
+                // save to file
+
+            }
+
+        }
+
     }
 
 
@@ -173,7 +224,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * @param pointX2     point x2
      * @param pointY2     point y2
      */
-    public void drawGraphics(Graphics2D graphics2D, Tool currentTool, int pointX1, int pointY1, int pointX2, int pointY2)
+    public void drawGraphics(Graphics2D graphics2D, Tool currentTool, int pointX1, int pointY1, int pointX2, int pointY2, ArrayList<Integer> xPolyList, ArrayList<Integer> yPolyList)
     {
         int positionX, positionY;   // Top left corner of rectangle that contains the figure.
         int width, height;         // Width and height of rectangle that contains the figure.
@@ -225,26 +276,37 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         {
             graphics2D.setColor(penColor);
             graphics2D.drawRect(positionX, positionY, width, height);
-            if(fillColor != Color.WHITE) {
-                graphics2D.setColor(fillColor);
-                graphics2D.fillRect(positionX + 1, positionY + 1, width - 1, height - 1);
-            }
+
+            graphics2D.setColor(fillColor);
+            graphics2D.fillRect(positionX + 1, positionY + 1, width - 1, height - 1);
+
+
             return;
         }
 
         if (currentTool.toolType == ToolFactory.ELLIPSE_TOOL)                  //if isSelected tool is ELLIPSE
         {
-
             graphics2D.setColor(penColor);
             graphics2D.drawOval(positionX, positionY, width, height);
-            if(fillColor != Color.WHITE) {
-                graphics2D.setColor(fillColor);
-                graphics2D.fillOval(positionX + 1, positionY + 1, width - 2, height - 2);
-            }
+
+            graphics2D.setColor(fillColor);
+            graphics2D.fillOval(positionX + 1, positionY + 1, width - 2, height - 2);
+
             return;
         }
 
         if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
+            int[] xList = xPolyList.stream().mapToInt(Integer::intValue).toArray();
+            int[] yList = yPolyList.stream().mapToInt(Integer::intValue).toArray();
+
+            Polygon aPoly = new Polygon(xList, yList, xPolyList.size());
+            graphics2D.setColor(penColor);
+            graphics2D.drawPolygon(aPoly);
+            graphics2D.setColor(fillColor);
+            graphics2D.fillPolygon(aPoly);
+
+            xPoly.clear();
+            yPoly.clear();
 
         }
 
@@ -315,15 +377,17 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        createOffScreenImage();                             //create off-screen image
+        createOffScreenImage();
         getPreferredSize();
         graphics = (Graphics2D) g;       //convert Graphics to Graphics2D
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1.0f));
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);                //draw image
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);  //draw image
         if (isDrawing && currentTool.toolType != ToolFactory.CLEAR_TOOL){
-            drawGraphics(graphics, currentTool, startX, startY, currentX, currentY);     //call the drawGraphics method.
+            drawGraphics(graphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);     //call the drawGraphics method.
         }
-        drawPolygonGraphics(graphics,currentPolygon,polygons,polyColor,polyFilledColor);
+
+
+        //drawPolygonGraphics(graphics,currentPolygon,polygons,polyColor,polyFilledColor); /// this should be inside drawGraphics
     }
 
     private Color getCurrentColor()             //get the isSelected color from the TollDetails class
@@ -360,7 +424,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * @param y2
      */
 
-    public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2, Polygon polygon, Color penColorInput,Color fillColorInput){
+    public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2, Color penColorInput,Color fillColorInput){
 
         saveToStack(image);
         saveToHistoryStack(image);
@@ -377,13 +441,32 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
         if ( currentTool.toolType != ToolFactory.CLEAR_TOOL)
         {
-            drawPolygon(dragGraphics,polygon,penColorInput,fillColorInput);
-            repaintRectangle(startX, startY, oldX, oldY);
+            if (currentTool.toolType == ToolFactory.POLYGON_TOOL){
+                //drawPolygon(dragGraphics,polygon,penColorInput,fillColorInput);
+
+                //repaintRectangle(startX, startY, oldX, oldY);
+                String temp = "POLYGON ";
+                for (int i = 0; i< xPoly.size(); i++){
+                    temp += (double) xPoly.get(i) / getWidth() + " " + (double) yPoly.get(i) /getHeight();
+                    if (i != xPoly.size() - 1){
+                        temp += " ";
+                    }
+                    else {
+                        temp += "\n";
+                    }
+                }
+
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
+                outLines.push(temp);
+                imageRecordStack.push(temp);
+
+            }
+            //repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
                 // Draw the shape only if both its height
                 // and width are non-zero.
-                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
-                repaintRectangle(startX, startY, currentX, currentY);
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
+                //repaintRectangle(startX, startY, currentX, currentY);
                 // Record what we've drawn
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
                     outLines.push("LINE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
@@ -409,7 +492,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
             }
             else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
-                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
                 // Record the plot we've drawn
                 outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
                 imageRecordStack.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
@@ -428,7 +511,6 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             throw new VecFileException("Invalid vec format: Wrong shapes");
         } else {
             if (splitArray[0].equals("FILL")) {
-                System.out.println("1");
                 if (!isColor(splitArray[1])) {
                     throw new VecFileException("Invalid vec format: Color is not valid.");
                 }
@@ -520,7 +602,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
 
 
-    public void drawLine(String line){
+    public void drawLineByLine(String line){
 
         String[] splitArray = line.split("\\s+");
         Color c = Color.BLACK;
@@ -534,7 +616,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         }
 
         if (splitArray[0].equals("FILL") && splitArray[1].equals("OFF")){
-            fillColor = Color.WHITE; /// should be none
+            fillColor = transparent; /// should be none
         }
 
         if (splitArray[0].equals("RECTANGLE")){
@@ -550,20 +632,30 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             currentTool = ToolFactory.createTool(4);
         }
 
-
-        //System.out.println("height" + Paint.squarePad.getHeight());
-        //System.out.println("width" + Paint.squarePad.getWidth());
         int h = getHeight();
         int w = getWidth();
 
-
-        if (splitArray[0].equals("PLOT")) {
-
+        if (splitArray[0].equals("RECTANGLE") || splitArray[0].equals("LINE") || splitArray[0].equals("ELLIPSE")){
             int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
             int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
-            setCoordinatesAndDraw(x1, y1, x1, y1, inputPolygon, penColor, fillColor);
+            int x2 = (int) Math.round(Double.parseDouble(splitArray[3]) * h);
+            int y2 = (int) Math.round(Double.parseDouble(splitArray[4]) * w);
+            setCoordinatesAndDraw(x1, y1, x2, y2, penColor, fillColor);
         }
-        else if (splitArray[0].equals("POLYGON")) {
+
+
+        //System.out.println("height" + Paint.squarePad.getHeight());
+        //System.out.println("width" + Paint.squarePad.getWidth());
+
+
+        if (splitArray[0].equals("PLOT")) {
+            currentTool = ToolFactory.createTool(2);
+            int x1 = (int) Math.round(Double.parseDouble(splitArray[1]) * h);
+            int y1 = (int) Math.round(Double.parseDouble(splitArray[2]) * w);
+            setCoordinatesAndDraw(x1, y1, x1, y1, penColor, fillColor);
+        }
+        if (splitArray[0].equals("POLYGON")) {
+            currentTool = ToolFactory.createTool(5);
             if (!xPoly.isEmpty() || !yPoly.isEmpty()) {
                 xPoly = new ArrayList<>();
                 yPoly = new ArrayList<>();
@@ -577,12 +669,12 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
                     yPoly.add(y);
                 }
             }
-            int[] xList = xPoly.stream().mapToInt(Integer::intValue).toArray();
-            int[] yList = yPoly.stream().mapToInt(Integer::intValue).toArray();
-            inputPolygon = new Polygon(xList, yList, xPoly.size());
-            inputPolygons.add(inputPolygon);
-            setCoordinatesAndDraw(0, 0, 0, 0,inputPolygon,penColor,fillColor);
+            setCoordinatesAndDraw(0, 0, 0, 0,penColor,fillColor);
         }
+
+
+
+
 
 
         //System.out.println(savedImagesStack);
@@ -595,18 +687,12 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             String line = scanner.nextLine();
             try{
                 checkLine(line);
-                drawLine(line);
+                drawLineByLine(line);
             }
             catch(VecFileException e){
                 System.out.println(e.getMessage());
             }
 
-            // the whole thing after this should be inside try block.
-
-
-
-
-            //System.out.println(splitArray[0]);
         }
     }
 
@@ -628,7 +714,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         if(currentTool.toolType != ToolFactory.POLYGON_TOOL){
             saveToStack(image);
         }
-        System.out.println("Stack length " + savedImagesStack.size());
+        //System.out.println("Stack length " + savedImagesStack.size());
 
 
 
@@ -667,14 +753,14 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         currentX = evt.getX();    //save mouse coordinates
         currentY = evt.getY();
 
-        drawPolygonGraphics(graphics,currentPolygon,polygons,polyColor,polyFilledColor); ///
+        //drawPolygonGraphics(graphics,currentPolygon,polygons,polyColor,polyFilledColor); ///
         if (currentTool.toolType != ToolFactory.CLEAR_TOOL)
         {
             repaintRectangle(startX, startY, oldX, oldY);
             if (currentX != startX && currentY != startY) {
                 // Draw the shape only if both its height
                 // and width are non-zero.
-                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
                 repaintRectangle(startX, startY, currentX, currentY);
                 // Record what we've drawn
                 if (currentTool.toolType == ToolFactory.LINE_TOOL){
@@ -703,7 +789,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
             }
             else if (currentX == startX && currentY == startY && currentTool.toolType == ToolFactory.PLOT_TOOL) {
-                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY);
+                drawGraphics(dragGraphics, currentTool, startX, startY, currentX, currentY, xPoly, yPoly);
                 // Record what we've drawn
                 outLines.push("PLOT" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + "\n");
                 imageRecordStack.push("ELLIPSE" + " " + (double) startX / getWidth()  + " " + (double) startY / getHeight() + " "
@@ -712,8 +798,8 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             }
         }
 
-        dragGraphics.dispose();
-        dragGraphics = null;
+        //dragGraphics.dispose();
+        //dragGraphics = null;
     }
 
     /**
@@ -730,19 +816,20 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
         currentX = evt.getX();   // x-coordinate of mouse.
         currentY = evt.getY();   // y=coordinate of mouse.
+        //System.out.println(currentTool.toolType == ToolFactory.CLEAR_TOOL);
 
 
 
         if (currentTool.toolType == ToolFactory.CLEAR_TOOL)
         {
 
-            drawGraphics(dragGraphics, ToolFactory.createTool(ToolFactory.CLEAR_TOOL), oldX, oldY, currentX, currentY); // A CURVE is drawn as a series of LINEs.
+            drawGraphics(dragGraphics, ToolFactory.createTool(ToolFactory.CLEAR_TOOL), oldX, oldY, currentX, currentY, xPoly, yPoly); // A CURVE is drawn as a series of LINEs.
             repaintRectangle(oldX, oldY, currentX, currentY);
         }
 
         else
         {
-            drawPolygonGraphics(dragGraphics,currentPolygon,polygons,polyColor,polyFilledColor); ///
+            //drawPolygonGraphics(dragGraphics,currentPolygon,polygons,polyColor,polyFilledColor); ///
             repaintRectangle(startX, startY, oldX, oldY);     //repaint the rectangle that contains the previous version of the figure
             repaintRectangle(startX, startY, currentX, currentY);   //repaint the rectangle that contains the new version of the figure
         }
@@ -770,9 +857,9 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
             setImage(savedImagesStack.pop());
 
-            System.out.println(outLines.size());
-            System.out.println(imageRecordStack.size());
-            System.out.println(savedImagesStack.size());
+            //System.out.println(outLines.size());
+            //System.out.println(imageRecordStack.size());
+            //System.out.println(savedImagesStack.size());
         }
     }
 
@@ -852,41 +939,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
 
 
-    /**
-     * Method used to record the number of mouse clicks to draw the polygon
-     * Click the left mouse to add a point to the polygon
-     * Double click the left mouse to complete a polygon
-     * Right click to delete the current polygon
-     * @param e
-     */
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(currentTool.toolType == ToolFactory.POLYGON_TOOL) {
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                if (e.getClickCount() == 1) {
-                    currentPolygon.addPoint(e.getX(), e.getY());
-                    xPoly.add(currentX);
-                    yPoly.add(currentY);
-                    repaint();
-                } else if (e.getClickCount() == 2) {
-                    if (currentPolygon.npoints > 2) {
-                        polygons.add(currentPolygon);
-                    }
-                    saveToStack(image);
-                    System.out.println("Stack length " + savedImagesStack.size());
 
-                    polyColor.add(penColor);
-                    polyFilledColor.add(fillColor);
-                    currentPolygon = new Polygon();
-                    repaint();
-                }
-            } /*else if (SwingUtilities.isRightMouseButton(e)) {
-                currentPolygon = new Polygon();
-                repaint();
-            }*/
-        }
-
-    }
 
 
     @Override

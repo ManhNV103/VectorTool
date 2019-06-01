@@ -36,7 +36,7 @@ public class PaintToolPanel extends JPanel {
         toolPanel.setPreferredSize(new Dimension(200, 300));
         toolButtons = new ToolButton[6];                        //create new array of buttons
 
-        resetButton = new JButton("Clear fill color.");
+        resetButton = new JButton("FILL OFF");
         resetButton.setHorizontalAlignment(SwingConstants.CENTER);
         resetButton.addActionListener(new ClickResetListener());
 
@@ -73,6 +73,7 @@ public class PaintToolPanel extends JPanel {
         public void actionPerformed(ActionEvent e){
             if(e.getSource() == resetButton){
                 Paint.colorPalette.deselectAll();
+                Paint.squarePad.setCurrentFillColor(new Color(1f,0f,0f,0 ));
             }
         }
     }

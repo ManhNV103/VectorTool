@@ -30,7 +30,7 @@ public class ColorPalette extends JPanel {
         }
 
 
-        selectedFillColor = Color.GRAY;                                    //set initial selectedColor to black
+        selectedFillColor = new Color(1f,0f,0f,0 );                                    //set initial selectedColor to black
         fillColorDisplay = new JPanel();                            //create a new JPanel for holding the selectedColor
         fillColorDisplay.setPreferredSize(new Dimension(100, 150));   //set the size of the panel
         fillColorDisplay.add(new JLabel("Fill Color"),BorderLayout.CENTER);
@@ -41,14 +41,15 @@ public class ColorPalette extends JPanel {
                     fillColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.fillColor));
                     selectedFillColor = fillColorDisplay.getBackground();                                   //change the isSelected color                     //change the DrawingPanel brushColor
                     Paint.squarePad.setCurrentFillColor(selectedFillColor);
+                    System.out.println("set fill color");
                 }
             }
         });
 
 
-        selectedPenColor = Color.GRAY;
+        selectedPenColor = Color.BLACK;
         penColorDisplay = new JPanel();
-        penColorDisplay.setBackground(Color.WHITE);
+        //penColorDisplay.setBackground(Color.WHITE);
         penColorDisplay.setPreferredSize(new Dimension(100, 150));
         penColorDisplay.add(new JLabel("Pen Color"),BorderLayout.CENTER);
         penColorDisplay.addMouseListener(new MouseAdapter(){
@@ -57,7 +58,7 @@ public class ColorPalette extends JPanel {
                 penColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.penColor));
                 selectedPenColor = penColorDisplay.getBackground();                                   //change the isSelected color
                 Paint.squarePad.currentToolDetails.setColor(penColorDisplay.getBackground());     //change the ToolDetails color
-                Paint.squarePad.setCurrentPenColor(selectedPenColor);
+                Paint.squarePad.setCurrentPenColor(Color.BLUE);
             }
         });
 

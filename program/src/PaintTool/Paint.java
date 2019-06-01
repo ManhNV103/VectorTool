@@ -18,11 +18,12 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     public static final int WIDTH = 1200;
 
     private JPanel padDraw;
-    public static SquarePadDrawing squarePad;
+
     private Menu menuBar;
     public static ColorPalette colorPalette;
     public static PaintToolPanel paintToolPanel;
     public static DrawingHistory historyPanel;
+    public static SquarePadDrawing squarePad;
 
     /**
      * Constructor
@@ -41,16 +42,6 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Create draw PadDraw
-        squarePad = new SquarePadDrawing();
-        squarePad.setBackground(Color.WHITE);
-        padDraw = new JPanel();
-        padDraw.setBackground(Color.LIGHT_GRAY);
-        padDraw.setLayout(new GridBagLayout());
-        padDraw.add(squarePad);
-
-        getContentPane().add(padDraw, BorderLayout.CENTER);
-
         //Set the menu bar and add the label to the content pane.
         menuBar = new Menu();
         setJMenuBar(menuBar);
@@ -67,6 +58,16 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
         historyPanel = new DrawingHistory();
         getContentPane().add(historyPanel,BorderLayout.EAST);
+
+        // Create draw PadDraw
+        squarePad = new SquarePadDrawing();
+        squarePad.setBackground(Color.WHITE);
+        padDraw = new JPanel();
+        padDraw.setBackground(Color.LIGHT_GRAY);
+        padDraw.setLayout(new GridBagLayout());
+        padDraw.add(squarePad);
+
+        getContentPane().add(padDraw, BorderLayout.CENTER);
 
 
 
