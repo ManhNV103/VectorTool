@@ -96,11 +96,18 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
     }
 
+    /**
+     * Override method when implementing ActionListener
+     * @param e ActionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
     }
 
+    /**
+     * Override method when implementing Runnable
+     */
     @Override
     public void run() {
         createGUI();

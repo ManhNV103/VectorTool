@@ -29,6 +29,9 @@ public class DrawingHistory extends JPanel implements ActionListener {
     private ArrayList<JButton> btnLists = new ArrayList<>();
     private Stack<Image> imageStacks = new Stack<>();
 
+    /**
+     * Default constructor
+     */
     public DrawingHistory(){
         super();
         this.createGUI();
@@ -60,6 +63,10 @@ public class DrawingHistory extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * Override method when implementing ActionListener
+     * @param e ActionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 

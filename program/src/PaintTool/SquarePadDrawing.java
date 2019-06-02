@@ -317,7 +317,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     }
 
     /**
-     * Method used to set up the painting properties of the screen image
+     * overrides method in JComponent
      * @param g Graphics
      */
     @Override

@@ -44,6 +44,8 @@ public class ColorPalette extends JPanel {
                     fillColorDisplay.setBackground(JColorChooser.showDialog(Paint.squarePad, "Change Color", Paint.squarePad.fillColor));
                     selectedFillColor = fillColorDisplay.getBackground();   //change the selected fill color
                     Paint.squarePad.setCurrentFillColor(selectedFillColor); // set the fill color in squarePadDrawing
+
+
                 }
             }
         });
@@ -84,8 +86,11 @@ public class ColorPalette extends JPanel {
         add(colorButtonRows, "Center");
     }
 
-
-    public void paintComponent(Graphics g)                      //overrides method in JComponent
+    /**
+     * overrides method in JComponent
+     * @param g Graphics
+     */
+    public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
     }

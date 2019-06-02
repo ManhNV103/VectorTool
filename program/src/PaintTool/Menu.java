@@ -108,6 +108,10 @@ public class Menu extends JMenuBar implements ActionListener {
 
     }
 
+    /**
+     * overrides method in JComponent
+     * @param g Graphics
+     */
     public void paintComponent(Graphics2D g)
     {
         super.paintComponent(g);

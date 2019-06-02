@@ -81,6 +81,7 @@ public class PaintToolPanel extends JPanel {
             if(e.getSource() == resetButton){
                 Paint.squarePad.setCurrentFillColor(new Color(1f,0f,0f,0 ));
                 Paint.squarePad.fill =false;
+                Paint.colorPalette.fillColorDisplay.setBackground(Color.WHITE);
                 Paint.squarePad.outLines.push("FILL OFF\n");
             }
         }

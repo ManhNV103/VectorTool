@@ -34,6 +34,10 @@ public class ToolButton extends JButton implements ActionListener {
         addActionListener(this);
     }
 
+    /**
+     * overrides method in JComponent
+     * @param g Graphics
+     */
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
