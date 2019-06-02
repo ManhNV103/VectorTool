@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aface3c4-d701-4455-b0c0-724f039a607c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/ColorPalette.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/ColorPalette.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/DrawingHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/DrawingHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/Paint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/Paint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PaintTool/ToolButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PaintTool/ToolButton.java" afterDir="false" />
-    </list>
+    <list default="true" id="aface3c4-d701-4455-b0c0-724f039a607c" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,10 +15,23 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PaintTool/ColorPalette.java">
+        <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolButton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-403">
-              <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+            <state relative-caret-position="233">
+              <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8883">
+              <caret line="954" column="6" selection-start-line="954" selection-start-column="6" selection-end-line="954" selection-end-column="6" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -39,7 +43,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolDetails.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
+            <state relative-caret-position="394">
               <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -51,23 +55,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
+            <state relative-caret-position="455">
               <caret line="35" column="28" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolButton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,7 +76,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PaintTool/Paint.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="308">
@@ -94,6 +85,19 @@
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#3002#3003#0" expanded="true" />
                 <element signature="e#3029#3030#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-562">
+              <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -116,19 +120,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1642">
               <caret line="32" column="26" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
-              <caret line="321" column="7" selection-start-line="321" selection-start-column="7" selection-end-line="321" selection-end-column="7" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
@@ -277,7 +268,7 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559463135391" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559463405917" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -560,69 +551,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-562">
-          <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolDetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="35" column="28" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/Tool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="321" column="7" selection-start-line="321" selection-start-column="7" selection-end-line="321" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PaintTool/ColorPalette.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-403">
@@ -673,6 +601,69 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#3002#3003#0" expanded="true" />
             <element signature="e#3029#3030#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/PaintToolPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-562">
+          <caret line="22" column="12" selection-start-line="22" selection-start-column="12" selection-end-line="22" selection-end-column="12" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/Tool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="39" column="7" selection-start-line="39" selection-start-column="7" selection-end-line="39" selection-end-column="7" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolDetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/ToolFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="35" column="28" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PaintTool/SquarePadDrawing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8883">
+          <caret line="954" column="6" selection-start-line="954" selection-start-column="6" selection-end-line="954" selection-end-column="6" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
