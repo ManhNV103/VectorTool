@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 package PaintTool;
@@ -15,9 +15,12 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
+ * DrawingHistory
  * A class that extends JPanel and implements ActionListener for showing all drawing operations supporting Undo option
  */
 public class DrawingHistory extends JPanel implements ActionListener {
+
+    // Initialize variables
 
     private JLabel history;
     private JButton updateBtn;

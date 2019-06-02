@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 package PaintTool;
@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * PaintToolPanel
  * A class contains instances of ToolButton classes and a reset button for clearing selected colors
  */
 public class PaintToolPanel extends JPanel {
@@ -29,48 +30,51 @@ public class PaintToolPanel extends JPanel {
     private Icon polygon = new ImageIcon(getClass().getResource("images/polygon.png"));
     private JPanel toolPanel = new JPanel();
 
+    /**
+     * Default constructor
+     */
     public PaintToolPanel(){
-        setBackground(Color.DARK_GRAY);                          //customize the panel
+        setBackground(Color.DARK_GRAY);
         setPreferredSize(new Dimension(200, 0));
         setLayout(new BorderLayout(8, 8));
 
-        toolPanel.setLayout(new GridLayout(3, 2));              //customize the tool panel
+        // Grid Layout for toolPanel
+        toolPanel.setLayout(new GridLayout(3, 2));
         toolPanel.setBackground(Color.DARK_GRAY);
         toolPanel.setPreferredSize(new Dimension(200, 300));
         toolButtons = new ToolButton[6];                        //create new array of buttons
 
+        // initialize resetButton
         resetButton = new JButton("FILL OFF");
         resetButton.setHorizontalAlignment(SwingConstants.CENTER);
         resetButton.addActionListener(new ClickResetListener());
 
-
-
+        // create panel for resetButton
         JPanel radioButtonPanel = new JPanel();
         BoxLayout radioButtonPanelLayout = new BoxLayout(radioButtonPanel,BoxLayout.X_AXIS);
         radioButtonPanel.setLayout(radioButtonPanelLayout);
         radioButtonPanel.add(resetButton);
 
-        addToolButtons();
-
-
-        for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);    //add buttons to tool panel
-
-
-        this.add(toolPanel, BorderLayout.NORTH);
-        this.add(radioButtonPanel,BorderLayout.CENTER);
-
-    }
-
-    private void addToolButtons() {
+        // add all ToolButton in array toolButton
         toolButtons[0] = new ToolButton(clear, ToolFactory.createTool(ToolFactory.CLEAR_TOOL));
         toolButtons[1] = new ToolButton(plot, ToolFactory.createTool(ToolFactory.PLOT_TOOL));
         toolButtons[2] = new ToolButton(line, ToolFactory.createTool(ToolFactory.LINE_TOOL));
         toolButtons[3] = new ToolButton(rectangle,ToolFactory.createTool(ToolFactory.RECTANGLE_TOOL));
         toolButtons[4] = new ToolButton(ellipse,ToolFactory.createTool(ToolFactory.ELLIPSE_TOOL));
         toolButtons[5] = new ToolButton(polygon,ToolFactory.createTool(ToolFactory.POLYGON_TOOL));
+
+
+        for (ToolButton toolButton : toolButtons) toolPanel.add(toolButton);    //add buttons to tool panel
+
+        // Add all panels in toolPanel
+        this.add(toolPanel, BorderLayout.NORTH);
+        this.add(radioButtonPanel,BorderLayout.CENTER);
+
     }
 
-
+    /**
+     * Class implements ActionListener for resetButton
+     */
     private class ClickResetListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e){

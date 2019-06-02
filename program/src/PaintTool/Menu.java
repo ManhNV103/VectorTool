@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 
@@ -18,9 +18,12 @@ import java.util.Stack;
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 
 /**
+ * Menu
  * A class that extends the JMenuBar and adds necessary menu items
  */
 public class Menu extends JMenuBar implements ActionListener {
+
+    // Initialize variables
 
     private JMenu menuFile;
     private JMenu menuEdit;

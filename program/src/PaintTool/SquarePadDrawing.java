@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 package PaintTool;
@@ -17,13 +17,12 @@ import java.util.Stack;
 
 
 /**
- * Implementation of draw function should be implemented in this class (SquarePad).
- *
+ * SquarePadDrawing
+ * A Class that extends the JPanel and contains all the drawing logic with code
  */
 
 public class SquarePadDrawing extends JPanel implements MouseListener, MouseMotionListener {
-    // an image to draw on
-    private Image image;
+    private Image image;// an image to draw on
     private Image backGround; //undonew
     private Stack<Image> savedImagesStack = new Stack<>(); //undonew
     private Stack<String> imageRecordStack = new Stack<>(); // this only record drawn images for the undo (not including set color, fill). So if you need to record everything for importing/exporting files, use outLines Stack below instead.
@@ -59,7 +58,9 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     private Color transparent = new Color(1f,0f,0f,0 );
     public boolean fill; //determine whether the shape is filled or not
 
-    //Now for the constructors
+    /**
+     * Default constructor
+     */
     public SquarePadDrawing(){
         setDoubleBuffered(false);
         addMouseListener(this);                         //add mouse listener
@@ -72,6 +73,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         fillColor = transparent; /// initial fill color
     }
 
+    /**
+     * Method used to scale the size of drawing screen
+     * @return
+     */
     @Override
     public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
@@ -238,7 +243,6 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
             yPoly.clear();
 
         }
-
 
     }
 
@@ -830,8 +834,11 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         saveToStack(image);
     }
 
+    /**
+     * Pop i last images from the stack
+     * @param i
+     */
     public void popImagesFromStack(int i){
-        // pop i (last) elements from the stack
         for (int k = 0; k < i; k++){
             setImage(savedImagesStack.pop());
         }
@@ -855,18 +862,34 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         }
 
     }
+
+    /**
+     * Get the Undo stack
+     * @return
+     */
     public Stack<Image> getImageStack(){
         return savedImagesStack;
     }
 
+    /**
+     * Set the blank image
+     */
     public void blankImage(){
         setImage(savedImagesStack.get(0));
     }
 
+    /**
+     * Set image from Undo stack with given parameter
+     * @param i
+     */
     public void renderRequestImage(int i){
         setImage(savedImagesStack.get(i));
     }
 
+    /**
+     * Method used to set image of screen when using Undo Command
+     * @param img
+     */
     private void setImage(Image img) {
         graphics = (Graphics2D) img.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -882,6 +905,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         return copyOfImage;
     }
 
+    /**
+     * Save image to Undo stack
+     * @param img
+     */
     private void saveToStack(Image img) {
         savedImagesStack.push(copyImage(img));
         if (savedImagesStack.size() != 0){
@@ -889,10 +916,18 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
         }
     }
 
+    /**
+     * Save image to HistoryStack
+     * @param img
+     */
     private void saveToHistoryStack(Image img) {
         historyImagesStack.push(copyImage(img));
     }
 
+    /**
+     * Get the size of Undo stack
+     * @return
+     */
     public int getStackSize(){
         return savedImagesStack.size();
     }
@@ -915,10 +950,18 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
  */
 class ImageStack<E> extends Stack<E> {
 
+    /**
+     * Default constructor
+     */
     public ImageStack() {
         super();
     }
 
+    /**
+     * Method used to push object in the ImageStack
+     * @param object
+     * @return
+     */
     @Override
     public Object push(Object object) {
         /*

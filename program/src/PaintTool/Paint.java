@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 
@@ -13,15 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Paint
  * A main application window contains all implemented panels
  */
 public class Paint extends JFrame implements ActionListener, Runnable {
 
+    // Initialize variables
+
     public static final int HEIGHT = 1200;
     public static final int WIDTH = 1200;
-
     private JPanel padDraw;
-
     private Menu menuBar;
     public static ColorPalette colorPalette;
     public static PaintToolPanel paintToolPanel;

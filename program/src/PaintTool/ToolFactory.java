@@ -3,12 +3,11 @@
  * Tran Quang Huy & Nguyen Van Manh
  */
 
-
-//Class which serves for creating the appropriate tool class
 package PaintTool;
 
 /**
- * A class that creates a Tool class instance, depending on the given parameter
+ * ToolFactory
+ * A class that serves for creating the appropriate Tool class
  */
 public class ToolFactory {
     //variables to hold different tool class instances

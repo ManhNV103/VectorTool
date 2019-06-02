@@ -1,19 +1,20 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 package PaintTool;
 import java.awt.*;
 
 /**
+ * ToolDetails
  * A class that extends the Tool class and provides a method for customizing the color
  */
 public class ToolDetails extends Tool {
     private Color color;
 
     /**
-     * Constructors
+     * Constructors with parameters Color for Tool and type parameter of Too
      * @param brushColor
      * @param type
      */

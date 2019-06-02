@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 package PaintTool;
@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * ToolButton
  * A class that extends JButton and implements ActionListener for each Tool button 
  */
 public class ToolButton extends JButton implements ActionListener {
@@ -19,7 +20,7 @@ public class ToolButton extends JButton implements ActionListener {
     public Tool tool;
 
     /**
-     * Constructors
+     * Constructor with parameters Icon image for each Tool's button and Tool instance
      * @param icon
      * @param tool
      */
