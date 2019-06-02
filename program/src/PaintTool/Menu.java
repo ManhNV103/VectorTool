@@ -116,8 +116,8 @@ public class Menu extends JMenuBar implements ActionListener {
 
     /**
      * Checking whether the input is vec file
-     * @param filename
-     * @return
+     * @param filename String
+     * @return boolean
      */
     public boolean isVecFile(String filename){
         if (filename.endsWith(".vec")){
@@ -129,7 +129,7 @@ public class Menu extends JMenuBar implements ActionListener {
 
     /**
      * Method used to navigate and filter the input files, export to new output file and implement Undo command
-     * @param e
+     * @param e ActionEvent
      */
     @Override
     public void actionPerformed(ActionEvent e) {

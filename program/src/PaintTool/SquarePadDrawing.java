@@ -75,7 +75,6 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to scale the size of drawing screen
-     * @return
      */
     @Override
     public Dimension getPreferredSize() {
@@ -96,7 +95,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * Method used to record the number of mouse clicks to draw the polygon
      * Click the left mouse to add a point to the polygon
      * Right click to stop adding a point to the polygon and draw the polygon
-     * @param e
+     * @param e MouseEvent
      */
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -301,7 +300,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to get the height of the screen image
-     * @return
+     * @return Integer
      */
     public int getHeight(){
         return getSize().height;
@@ -309,7 +308,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to get the width of the screen image
-     * @return
+     * @return Integer
      */
     public int getWidth(){
         return getSize().width;
@@ -317,7 +316,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to set up the painting properties of the screen image
-     * @param g
+     * @param g Graphics
      */
     @Override
     public void paintComponent(Graphics g){
@@ -334,7 +333,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to get the current color of the selected Tool
-     * @return
+     * @return Color
      */
     private Color getCurrentColor()             //get the isSelected color from the TollDetails class
     {
@@ -350,8 +349,8 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to convert the current RGB color to Hex color written in the output file
-     * @param colour
-     * @return
+     * @param colour Color
+     * @return String
      * @throws NullPointerException
      */
     public static String toHexString(Color colour) throws NullPointerException {
@@ -364,7 +363,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to set the current pen color and add drawing commands into the output file
-     * @param clr
+     * @param clr Color
      */
     public  void setCurrentPenColor(Color clr)
     {
@@ -375,7 +374,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to set the current fill color and add drawing commands into the output file
-     * @param clr
+     * @param clr Color
      */
     public void setCurrentFillColor(Color clr)
     {
@@ -386,10 +385,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Use to set coordinates and update drawing when read from .vec file, used in Menu.java when file is imported
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
+     * @param x1 Integer
+     * @param y1 Integer
+     * @param x2 Integer
+     * @param y2 Integer
      */
 
     public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2, Color penColorInput,Color fillColorInput){
@@ -545,7 +544,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     /**
      * Check whether the number is valid
      * @param strNum
-     * @return
+     * @return boolean
      */
     public static boolean isValidNumber(String strNum) {
         try {
@@ -566,7 +565,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
     /**
      * Check whether the string color input is color
      * @param color
-     * @return
+     * @return boolean
      */
     public static boolean isColor(String color) {
         try {
@@ -709,7 +708,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * to get output string to write to out put file. Used in Menu.java
-     * @return
+     * @return Stack<String>
      */
 
     public Stack<String> getOutLines(){
@@ -836,7 +835,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Pop i last images from the stack
-     * @param i
+     * @param i Integer
      */
     public void popImagesFromStack(int i){
         for (int k = 0; k < i; k++){
@@ -865,7 +864,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Get the Undo stack
-     * @return
+     * @return Stack<Image>
      */
     public Stack<Image> getImageStack(){
         return savedImagesStack;
@@ -880,7 +879,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Set image from Undo stack with given parameter
-     * @param i
+     * @param i Integer
      */
     public void renderRequestImage(int i){
         setImage(savedImagesStack.get(i));
@@ -888,7 +887,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to set image of screen when using Undo Command
-     * @param img
+     * @param img Image
      */
     private void setImage(Image img) {
         graphics = (Graphics2D) img.getGraphics();
@@ -907,7 +906,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Save image to Undo stack
-     * @param img
+     * @param img Image
      */
     private void saveToStack(Image img) {
         savedImagesStack.push(copyImage(img));
@@ -918,7 +917,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Save image to HistoryStack
-     * @param img
+     * @param img Image
      */
     private void saveToHistoryStack(Image img) {
         historyImagesStack.push(copyImage(img));
@@ -926,7 +925,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Get the size of Undo stack
-     * @return
+     * @return Integer
      */
     public int getStackSize(){
         return savedImagesStack.size();
@@ -945,8 +944,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 }
 
 /**
- * ImageStack<E> class for creating a history of all drawing operations
- * @param <E>
+ * ImageStack<E> class extends Stack<E> for creating a history of all drawing operations
  */
 class ImageStack<E> extends Stack<E> {
 
@@ -959,8 +957,8 @@ class ImageStack<E> extends Stack<E> {
 
     /**
      * Method used to push object in the ImageStack
-     * @param object
-     * @return
+     * @param object Object
+     * @return Object
      */
     @Override
     public Object push(Object object) {

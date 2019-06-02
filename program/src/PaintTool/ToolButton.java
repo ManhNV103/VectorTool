@@ -21,8 +21,8 @@ public class ToolButton extends JButton implements ActionListener {
 
     /**
      * Constructor with parameters Icon image for each Tool's button and Tool instance
-     * @param icon
-     * @param tool
+     * @param icon Icon Image
+     * @param tool Tool
      */
 
     public ToolButton(Icon icon, Tool tool)
@@ -42,7 +42,7 @@ public class ToolButton extends JButton implements ActionListener {
 
     /**
      * Action method
-     * @param event
+     * @param event ActionEvent
      */
 
     public void actionPerformed(ActionEvent event)

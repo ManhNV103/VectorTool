@@ -15,8 +15,8 @@ public class ToolDetails extends Tool {
 
     /**
      * Constructors with parameters Color for Tool and type parameter of Too
-     * @param brushColor
-     * @param type
+     * @param brushColor Color
+     * @param type Integer
      */
 
     public ToolDetails(Color brushColor, int type)
@@ -27,7 +27,7 @@ public class ToolDetails extends Tool {
 
     /**
      * Get color of the Tool
-     * @return
+     * @return Color
      */
 
     public Color getColor()
@@ -37,7 +37,7 @@ public class ToolDetails extends Tool {
 
     /**
      * Set color of the Tool
-     * @param clr
+     * @param clr Color
      */
     public void setColor(Color clr)
     {

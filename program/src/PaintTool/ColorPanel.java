@@ -17,7 +17,7 @@ public class ColorPanel extends JPanel {
 
     /**
      * Constructor with parameter Color
-     * @param clr
+     * @param clr Color
      */
     public ColorPanel(Color clr)
     {
