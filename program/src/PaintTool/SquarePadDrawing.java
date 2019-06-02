@@ -144,12 +144,14 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * The Tool parameter determines which shape will be drawn
      * For a line, a line is drawn from the brushPoints (x1, y1) to brushPoints (x2, y2)
      * For other shapes, brushPoints (x1, y1) and (x2, y2) give two corners of the shape
-     * @param graphics2D    Graphics class
-     * @param currentTool  isSelected tool
-     * @param pointX1     point x1
-     * @param pointY1     point y1
-     * @param pointX2     point x2
-     * @param pointY2     point y2
+     * @param graphics2D Graphics class
+     * @param currentTool isSelected tool
+     * @param pointX1 point x1
+     * @param pointY1 point y1
+     * @param pointX2 point x2
+     * @param pointY2 point y2
+     * @param xPolyList list of x coordinates of polygon
+     * @param yPolyList list of y coordinates of polygons
      */
     public void drawGraphics(Graphics2D graphics2D, Tool currentTool, int pointX1, int pointY1, int pointX2, int pointY2, ArrayList<Integer> xPolyList, ArrayList<Integer> yPolyList)
     {
@@ -351,7 +353,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * Method used to convert the current RGB color to Hex color written in the output file
      * @param colour Color
      * @return String
-     * @throws NullPointerException
+     * @throws NullPointerException Exception
      */
     public static String toHexString(Color colour) throws NullPointerException {
         String hexColour = Integer.toHexString(colour.getRGB() & 0xffffff);
@@ -389,6 +391,8 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
      * @param y1 Integer
      * @param x2 Integer
      * @param y2 Integer
+     * @param penColorInput Color
+     * @param fillColorInput Color
      */
 
     public void setCoordinatesAndDraw(int x1, int y1, int x2, int y2, Color penColorInput,Color fillColorInput){
@@ -543,7 +547,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Check whether the number is valid
-     * @param strNum
+     * @param strNum String
      * @return boolean
      */
     public static boolean isValidNumber(String strNum) {
@@ -564,7 +568,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Check whether the string color input is color
-     * @param color
+     * @param color String
      * @return boolean
      */
     public static boolean isColor(String color) {
@@ -578,7 +582,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to read draw each line of the input .vec file
-     * @param line
+     * @param line String
      */
 
     public void drawLineByLine(String line){
@@ -660,7 +664,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Method used to process all lines of input .vec file and draw on the screen image
-     * @param scanner
+     * @param scanner Scanner
      */
     public void drawFromFile(Scanner scanner){
         while (scanner.hasNextLine()) {
@@ -708,7 +712,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * to get output string to write to out put file. Used in Menu.java
-     * @return Stack<String>
+     * @return stack of strings
      */
 
     public Stack<String> getOutLines(){
@@ -864,7 +868,7 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
     /**
      * Get the Undo stack
-     * @return Stack<Image>
+     * @return Stack of Image
      */
     public Stack<Image> getImageStack(){
         return savedImagesStack;
@@ -943,8 +947,10 @@ public class SquarePadDrawing extends JPanel implements MouseListener, MouseMoti
 
 }
 
+
 /**
- * ImageStack<E> class extends Stack<E> for creating a history of all drawing operations
+ * ImageStack class extends Stack for creating a history of all drawing operations
+ * @param <E> Parameter
  */
 class ImageStack<E> extends Stack<E> {
 

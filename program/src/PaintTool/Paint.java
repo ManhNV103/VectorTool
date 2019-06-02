@@ -32,7 +32,7 @@ public class Paint extends JFrame implements ActionListener, Runnable {
     /**
      * Constructor
      * @param name: name of the window
-     * @throws HeadlessException
+     * @throws HeadlessException Exception
      */
     public Paint(String name) throws HeadlessException {
         super(name);
