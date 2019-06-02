@@ -6,6 +6,7 @@ import PaintTool.VecFileException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -244,10 +245,6 @@ public class TestFile {
 
 
 
-
-
-
-
     @Test
     public void plot_invalidLengthMessage() {
         String line = "PLOT 0.8 0.1 0.9";
@@ -303,7 +300,21 @@ public class TestFile {
         Assertions.assertEquals("Invalid vec format: Color is not valid.", thrown.getMessage());
     }
 
+    @Test
+    public void test_setPenColor(){
+        SquarePadDrawing Pad= new SquarePadDrawing();
+        Color c = Color.BLACK;
+        Pad.setCurrentPenColor(c);
+        Assertions.assertEquals(c, Pad.currentToolDetails.getColor());
+    }
 
+    @Test
+    public void test_setFillColor(){
+        SquarePadDrawing Pad= new SquarePadDrawing();
+        Color c = Color.GREEN;
+        Pad.setCurrentFillColor(c);
+        Assertions.assertEquals(c, Pad.fillColor);
+    }
 
 
 

@@ -1,6 +1,6 @@
 /**
  * JAVA DRAWING APP
- * Tran Quang Huy & Nguyen Van Manh
+ * @author Tran Quang Huy & Nguyen Van Manh
  */
 
 
@@ -12,13 +12,17 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Paint
+ * A main application window contains all implemented panels
+ */
 public class Paint extends JFrame implements ActionListener, Runnable {
+
+    // Initialize variables
 
     public static final int HEIGHT = 1200;
     public static final int WIDTH = 1200;
-
     private JPanel padDraw;
-
     private Menu menuBar;
     public static ColorPalette colorPalette;
     public static PaintToolPanel paintToolPanel;
@@ -69,8 +73,6 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
         getContentPane().add(padDraw, BorderLayout.CENTER);
 
-
-
         repaint();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -78,8 +80,10 @@ public class Paint extends JFrame implements ActionListener, Runnable {
 
     }
 
-    //set starting color to be used for drawing
-    public void setStartingColor()     //set starting color to be used for drawing
+    /**
+     * Set the starting color that is used for drawing
+     */
+    public void setStartingColor()
     {
         ColorPalette.penColorDisplay.setBackground(Color.GRAY);
         ColorPalette.selectedPenColor = ColorPalette.penColorDisplay.getBackground();
@@ -91,8 +95,6 @@ public class Paint extends JFrame implements ActionListener, Runnable {
         squarePad.fillColor = ColorPalette.selectedFillColor;
 
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
